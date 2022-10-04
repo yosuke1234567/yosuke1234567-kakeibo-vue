@@ -1,5 +1,7 @@
 :root {
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+
+    font-family: 'Zen Maru Gothic', sans-serif;
     font-size: 16px;
     line-height: 24px;
     font-weight: 400;
@@ -7,8 +9,8 @@
     /* color-scheme: light dark;
     color: rgba(255, 255, 255, 0.87);
     background-color: #242424; */
-    color: #213547;
-    background-color: #ffffff;
+    color: #333;
+    background-color: #fff;
 
     height: 100%;
 
@@ -34,36 +36,31 @@ body {
     height: 100%;
 }
 
-h1 {
-    font-size: 3.2em;
-    line-height: 1.1;
-}
-
-button {
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-family: inherit;
-    cursor: pointer;
-}
-
-input {
-    font-size: 1em;
-    font-family: inherit;
-}
-
-/* button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-} */
-
 #app {
-    max-width: 1280px;
+    width: 100%;
+    height: 100%;
     margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
 }
+
+.q-btn {
+    text-transform: none;
+}
+.q-layout:focus-visible {
+    outline: 0;
+}
+
+.q-layout.q-layout--standard {
+    height: 100%;
+}
+
+.q-page-container {
+    height: 100%;
+}
+
+
+/* input:-internal-autofill-selected {
+    background-color: transparent !important;
+} */
 
 /* 
 @media (prefers-color-scheme: light) {
