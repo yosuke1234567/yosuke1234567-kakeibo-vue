@@ -35,7 +35,7 @@ const toggleLeftDrawer = () => {
             </QList>
         </QDrawer>
 
-        <QPageContainer>
+        <QPageContainer class="page-view">
             <router-view />
         </QPageContainer>
 
@@ -48,5 +48,8 @@ const toggleLeftDrawer = () => {
 }
 .active-item {
     background-color: #e5e1e1;
+}
+.page-view {
+    background-color: #faf8f7;
 }
 </style>

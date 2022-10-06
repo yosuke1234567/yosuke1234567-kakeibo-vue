@@ -19,9 +19,15 @@ onMounted(() => {
 <template>
     <MainPage v-if="signInState" />
     <SignIn v-else-if="signInState === false" />
-    <div v-else>loading...</div>
+    <div v-else class="loading"><QSpinnerOval size="3em" /></div>
 </template>
 
-<style lang="scss">
-
+<style scoped lang="scss">
+.loading {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 </style>
