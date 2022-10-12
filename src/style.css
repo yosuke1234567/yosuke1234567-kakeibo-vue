@@ -9,7 +9,7 @@
     /* color-scheme: light dark;
     color: rgba(255, 255, 255, 0.87);
     background-color: #242424; */
-    color: #333;
+    color: #222;
     background-color: #fff;
 
     height: 100%;
@@ -55,6 +55,13 @@ body {
 
 .q-page-container {
     height: 100%;
+}
+
+.q-timeline h6 {
+    font-size: 1.25rem;
+}
+.q-timeline__subtitle {
+    font-size: 0.875rem;
 }
 
 

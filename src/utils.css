@@ -1,0 +1,14 @@
+.u-del-date-icon input::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+.u-bg-white {
+    background-color: #fff;
+    border-radius: 4px 4px 0 0;
+}
+.u-bg-white .q-field__control {
+    padding: 0 12px;
+}
+.u-bg-white.q-field--standard .q-field__control:before {
+    border: 0;
+}

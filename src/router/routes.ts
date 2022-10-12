@@ -8,6 +8,10 @@ export const routes = [
         component: () => import('../pages/Home.vue'),
     },
     {
+        path: '/input',
+        component: () => import('../pages/InputMenu.vue'),
+    },
+    {
         path: '/others',
         component: () => import('../pages/Others.vue'),
     },

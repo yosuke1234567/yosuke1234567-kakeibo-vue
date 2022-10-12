@@ -29,9 +29,10 @@ const toggleLeftDrawer = () => {
             <QList padding>
                 <QItem clickable :active="location === '/'" active-class="active-item" @click="router.push('/')">ホーム
                 </QItem>
+                <QItem clickable :active="location === '/input'" active-class="active-item"
+                    @click="router.push('./input')">入力</QItem>
                 <QItem clickable :active="location === '/others'" active-class="active-item"
                     @click="router.push('./others')">その他</QItem>
-                <QItem></QItem>
             </QList>
         </QDrawer>
 
@@ -47,9 +48,10 @@ const toggleLeftDrawer = () => {
     margin-left: 18px;
 }
 .active-item {
-    background-color: #e5e1e1;
+    background-color: #fdd83577;
+    color: initial;
 }
 .page-view {
-    background-color: #faf8f7;
+    background-color: #f5f2eb;
 }
 </style>
