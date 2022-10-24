@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { arrayUnion, doc, getDoc, updateDoc } from '@firebase/firestore';
+import { arrayUnion, doc, getDoc, setDoc, updateDoc } from '@firebase/firestore';
 import { onMounted, ref } from 'vue';
 import { auth, db } from '../firebase';
 
@@ -17,12 +17,19 @@ const amountErr = ref(false)
 
 const amountReg = /^[1-9][0-9]*$/
 
+interface category {
+    type: String,
+    color: String
+}
+
 onMounted(async () => {
     if (auth.currentUser) {
-        const decRef = doc(db, auth.currentUser.uid, 'data')
-        const docSnap = await getDoc(decRef)
+        const docRef = doc(db, auth.currentUser.uid, 'data')
+        const docSnap = await getDoc(docRef)
         const docObj = docSnap.data()
-        if (docObj) options.value = docObj.category
+        if (docObj) {
+            options.value = docObj.category.map((e: category) => e.type)
+        }
 
         uid.value = auth.currentUser.uid
     }
@@ -36,18 +43,15 @@ const onSubmit = async (e: Event) => {
     amountErr.value = !amountReg.test(amount.value) ? true : false
 
     if ((typeof (date.value) === 'string') && (category.value !== '') && amountReg.test(amount.value)) {
-        console.log('succces')
-        const docRef = doc(db, uid.value, 'expense')
-        await updateDoc(docRef, {
-            [date.value]: arrayUnion(
-                {
-                    date: date.value,
-                    category: category.value,
-                    amount: amount.value,
-                    memo: memo.value,
-                    id: Date.now()
-                }
-            )
+        console.log('sent firebase')
+        const id = Date.now()
+        const docRef = doc(db, uid.value, `expense-${id}`)
+        await setDoc(docRef, {
+            date: date.value,
+            category: category.value,
+            amount: amount.value,
+            memo: memo.value,
+            id: id
         })
     }
 }
@@ -65,7 +69,7 @@ const onKeydown = (e: KeyboardEvent) => {
                 <template v-slot:prepend>
                     <QIcon name="sym_r_event" class="cursor-pointer">
                         <QPopupProxy cover transition-show="fade" transition-hide="fade">
-                            <QDate v-model="date" mask="YYYY-MM-DD" flat>
+                            <QDate v-model="date" first-day-of-week="0" mask="YYYY-MM-DD" flat>
                                 <div class="row items-center justify-end">
                                     <QBtn v-close-popup label="完了" color="primary" flat />
                                 </div>
@@ -74,7 +78,8 @@ const onKeydown = (e: KeyboardEvent) => {
                     </QIcon>
                 </template>
             </QInput>
-            <QSelect v-model="category" label="カテゴリー *" :options="options" :class="{err: categoryErr}" class="u-bg-white">
+            <QSelect v-model="category" label="カテゴリー *" :options="options" :class="{err: categoryErr}"
+                class="u-bg-white">
                 <template v-slot:prepend>
                     <q-icon name="sym_r_category" />
                 </template>
@@ -90,7 +95,8 @@ const onKeydown = (e: KeyboardEvent) => {
                     <q-icon name="sym_r_edit" />
                 </template>
             </QInput>
-            <QBtn type="submit" label="保存する" unelevated color="secondary" text-color="initial" padding="12px 0" class="full-width" />
+            <QBtn type="submit" label="保存する" unelevated color="secondary" text-color="initial" padding="12px 0"
+                class="full-width" />
         </form>
     </div>
 </template>

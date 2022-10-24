@@ -12,6 +12,10 @@ export const routes = [
         component: () => import('../pages/InputMenu.vue'),
     },
     {
+        path: '/stats',
+        component: () => import('../pages/Stats.vue'),
+    },
+    {
         path: '/others',
         component: () => import('../pages/Others.vue'),
     },

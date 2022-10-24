@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.15.4",
+    "chart.js": "^3.9.1",
     "firebase": "^9.10.0",
     "quasar": "^2.8.4",
     "vue": "^3.2.37",
+    "vue-chartjs": "^4.1.2",
     "vue-router": "^4.1.5"
   },
   "devDependencies": {
@@ -21,6 +23,6 @@
     "sass": "^1.32.12",
     "typescript": "^4.6.4",
     "vite": "^3.1.0",
-    "vue-tsc": "^0.40.4"
+    "vue-tsc": "^1.0.8"
   }
 }

@@ -31,6 +31,8 @@ const toggleLeftDrawer = () => {
                 </QItem>
                 <QItem clickable :active="location === '/input'" active-class="active-item"
                     @click="router.push('./input')">入力</QItem>
+                <QItem clickable :active="location === '/stats'" active-class="active-item"
+                    @click="router.push('./stats')">統計</QItem>
                 <QItem clickable :active="location === '/others'" active-class="active-item"
                     @click="router.push('./others')">その他</QItem>
             </QList>
