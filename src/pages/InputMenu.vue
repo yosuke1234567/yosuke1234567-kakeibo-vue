@@ -51,7 +51,7 @@ const onSubmit = async (e: Event) => {
             category: category.value,
             amount: amount.value,
             memo: memo.value,
-            id: id
+            createdAt: id
         })
     }
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { query, orderBy, limit, collection, doc, getDoc, getDocs, where } from "firebase/firestore"
+import { query, orderBy, limit, collection, doc, getDoc, getDocs, setDoc, where } from "firebase/firestore"
 import { auth, db } from '../firebase'
 import DoughnutChart from '../components/DoughnutChart.vue'
 
@@ -20,7 +20,7 @@ onMounted(async () => {
     if (auth.currentUser) {
         const colRef = collection(db, auth.currentUser.uid)
 
-        const tlq = query(colRef, orderBy('id'), limit(5))
+        const tlq = query(colRef, orderBy('createdAt', 'desc'), limit(5))
         const tlSnap = await getDocs(tlq)
         tlSnap.forEach(doc => timelineData.value.push(doc.data()))
         console.log(timelineData.value)
@@ -35,10 +35,33 @@ onMounted(async () => {
         const docRef = doc(db, auth.currentUser.uid, 'data')
         const docSnap = await getDoc(docRef)
         const docObj = docSnap.data()
+        let f: { amount: number; category: any; }[] = []
         if (docObj) {
             chartLabels.value = docObj.category.map((e: category) => e.type)
             chartBgColor.value = docObj.category.map((e: category) => e.color)
+
+            chartLabels.value.forEach((e: any) => {
+                f.push({
+                    amount: 0,
+                    category: e
+                })
+            })
         }
+
+        const statsRef = doc(db, auth.currentUser!.uid, 'stats-2022-10')
+        
+        for (let i=0; i<thisMonthData.value.length; i++) {
+            f.forEach((e: any) => {
+                if (thisMonthData.value[i].category === e.category) {
+                    e.amount += thisMonthData.value[i].amount
+                }
+            })
+        }
+        await setDoc(statsRef, {
+            expense: f
+        })
+        chartValue.value = f.map((e: any) => e.amount)
+        console.log(chartValue.value)
     }
 })
 
