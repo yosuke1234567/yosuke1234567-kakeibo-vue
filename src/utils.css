@@ -12,3 +12,7 @@
 .u-bg-white.q-field--standard .q-field__control:before {
     border: 0;
 }
+
+.u-align-items-center .q-item {
+    align-items: center;
+}

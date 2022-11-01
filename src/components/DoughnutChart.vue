@@ -12,6 +12,7 @@ import {
 } from 'chart.js'
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale)
+ChartJS.defaults.font.family = "'Asap', 'Zen Maru Gothic', sans-serif"
 
 interface chartData {
     labels: String[],

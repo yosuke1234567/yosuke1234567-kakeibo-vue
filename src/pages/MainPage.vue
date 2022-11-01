@@ -25,8 +25,8 @@ const toggleLeftDrawer = () => {
     <QLayout view="hhh Lpr fff">
 
         <QDrawer v-model="leftDrawerOpen" side="left" bordered>
-            <h2 class="heading">家計簿アプリ</h2>
-            <QList padding>
+            <h2 class="heading">Expense App</h2>
+            <QList class="u-align-items-center" padding>
                 <QItem clickable :active="location === '/'" active-class="active-item" @click="router.push('/')">ホーム
                 </QItem>
                 <QItem clickable :active="location === '/input'" active-class="active-item"
@@ -47,7 +47,8 @@ const toggleLeftDrawer = () => {
     
 <style scoped lang="scss">
 .heading {
-    margin-left: 18px;
+    margin-left: 16px;
+    color: $primary;
 }
 .active-item {
     background-color: #fdd83577;

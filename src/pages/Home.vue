@@ -6,6 +6,7 @@ import DoughnutChart from '../components/DoughnutChart.vue'
 
 const timelineData = ref<Array<any>>([])
 const thisMonthData = ref<Array<any>>([])
+const thisMonthLoading = ref<Boolean>(true)
 
 const chartLabels = ref<Array<any>>([])
 const chartBgColor = ref<Array<any>>([])
@@ -31,6 +32,7 @@ onMounted(async () => {
         const tmSnap = await getDocs(tmq)
         tmSnap.forEach(doc => thisMonthData.value.push(doc.data()))
         console.log(thisMonthData.value)
+        thisMonthLoading.value = false
 
         const docRef = doc(db, auth.currentUser.uid, 'data')
         const docSnap = await getDoc(docRef)
@@ -48,7 +50,7 @@ onMounted(async () => {
             })
         }
 
-        const statsRef = doc(db, auth.currentUser!.uid, 'stats-2022-10')
+        const statsRef = doc(db, auth.currentUser!.uid, `stats-${date.getFullYear()}-${date.getMonth() + 1}`)
         
         for (let i=0; i<thisMonthData.value.length; i++) {
             f.forEach((e: any) => {
@@ -69,7 +71,9 @@ onMounted(async () => {
         
 <template>
     <div class="chart-wrap">
-        <DoughnutChart :chart-value="chartValue" :labels="chartLabels" :background-color="chartBgColor" />
+        <span v-if="thisMonthLoading">Loading</span>
+        <DoughnutChart v-else-if="thisMonthData.length" :chart-value="chartValue" :labels="chartLabels" :background-color="chartBgColor" />
+        <p v-else-if="thisMonthData.length==0">今月のデータはありません。</p>
     </div>
     <div class="container">
         <QTimeline color="secondary" class="tl">
@@ -85,8 +89,21 @@ onMounted(async () => {
         
 <style scoped lang="scss">
 .chart-wrap {
+    display: flex;
+    align-items: center;
     width: 400px;
+    min-height: 176px;
     margin: 0 auto;
+
+    p {
+        width: 100%;
+        margin: 0;
+        padding: 2rem 0;
+        border-radius: 0.375rem;
+        background-color: rgba(80, 73, 67, 0.1);
+        text-align: center;
+        font-size: 1.375rem;
+    }
 }
 
 .container {
@@ -107,7 +124,6 @@ onMounted(async () => {
         display: block;
         margin-left: 16px;
         font-size: 1.25em;
-        font-weight: 700;
     }
 }
 </style>
