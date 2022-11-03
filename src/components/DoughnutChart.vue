@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUpdate, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { Doughnut } from 'vue-chartjs'
 import {
     Chart as ChartJS,
@@ -32,7 +32,7 @@ const chartData = ref<chartData>({
     datasets: []
 })
 
-onBeforeUpdate(() => {
+onMounted(() => {
     chartData.value = {
         labels: props.labels,
         datasets: [

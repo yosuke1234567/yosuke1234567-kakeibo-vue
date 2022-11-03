@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { arrayUnion, doc, getDoc, setDoc, updateDoc } from '@firebase/firestore';
+import { doc, getDoc, setDoc } from '@firebase/firestore';
 import { onMounted, ref } from 'vue';
+import { updateMonthData } from '../components/updateMonthData';
 import { auth, db } from '../firebase';
 
 const date = ref<any>()
@@ -53,6 +54,8 @@ const onSubmit = async (e: Event) => {
             memo: memo.value,
             createdAt: id
         })
+
+        await updateMonthData()
     }
 }
 

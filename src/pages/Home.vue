@@ -1,21 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { query, orderBy, limit, collection, doc, getDoc, getDocs, setDoc, where } from "firebase/firestore"
+import { query, orderBy, limit, collection, doc, getDoc, getDocs, DocumentData } from 'firebase/firestore'
 import { auth, db } from '../firebase'
 import DoughnutChart from '../components/DoughnutChart.vue'
 
 const timelineData = ref<Array<any>>([])
-const thisMonthData = ref<Array<any>>([])
 const thisMonthLoading = ref<Boolean>(true)
 
 const chartLabels = ref<Array<any>>([])
 const chartBgColor = ref<Array<any>>([])
 const chartValue = ref<Array<any>>([])
-
-interface category {
-    type: String,
-    color: String
-}
 
 onMounted(async () => {
     if (auth.currentUser) {
@@ -26,44 +20,26 @@ onMounted(async () => {
         tlSnap.forEach(doc => timelineData.value.push(doc.data()))
         console.log(timelineData.value)
 
+        const categoryRef = doc(db, auth.currentUser!.uid, 'data')
+        const categorySnap = await getDoc(categoryRef)
+        const categories = categorySnap.data()!.category
+
+        interface CategoryDocElm {
+            color: String
+            type: String
+        }
+        chartLabels.value = categories!.map((e: CategoryDocElm) => e.type)
+        chartBgColor.value = categories!.map((e: CategoryDocElm) => e.color)
+
         const date = new Date()
-        const thisMonth = `${date.getFullYear()}-${date.getMonth() + 1}-01`
-        const tmq = query(colRef, where('date', '>=', thisMonth))
-        const tmSnap = await getDocs(tmq)
-        tmSnap.forEach(doc => thisMonthData.value.push(doc.data()))
-        console.log(thisMonthData.value)
+        const thisMonth = `${date.getFullYear()}-${date.getMonth() + 1}` // YYYY-MM
+        const statsRef = doc(db, auth.currentUser!.uid, `stats-${thisMonth}`)
+        const statsData = (await getDoc(statsRef)).data()
+        console.log(statsData)
+
+        chartValue.value = await statsData!.expense.map((e: DocumentData) => e.amount)
+
         thisMonthLoading.value = false
-
-        const docRef = doc(db, auth.currentUser.uid, 'data')
-        const docSnap = await getDoc(docRef)
-        const docObj = docSnap.data()
-        let f: { amount: number; category: any; }[] = []
-        if (docObj) {
-            chartLabels.value = docObj.category.map((e: category) => e.type)
-            chartBgColor.value = docObj.category.map((e: category) => e.color)
-
-            chartLabels.value.forEach((e: any) => {
-                f.push({
-                    amount: 0,
-                    category: e
-                })
-            })
-        }
-
-        const statsRef = doc(db, auth.currentUser!.uid, `stats-${date.getFullYear()}-${date.getMonth() + 1}`)
-        
-        for (let i=0; i<thisMonthData.value.length; i++) {
-            f.forEach((e: any) => {
-                if (thisMonthData.value[i].category === e.category) {
-                    e.amount += thisMonthData.value[i].amount
-                }
-            })
-        }
-        await setDoc(statsRef, {
-            expense: f
-        })
-        chartValue.value = f.map((e: any) => e.amount)
-        console.log(chartValue.value)
     }
 })
 
@@ -72,8 +48,9 @@ onMounted(async () => {
 <template>
     <div class="chart-wrap">
         <span v-if="thisMonthLoading">Loading</span>
-        <DoughnutChart v-else-if="thisMonthData.length" :chart-value="chartValue" :labels="chartLabels" :background-color="chartBgColor" />
-        <p v-else-if="thisMonthData.length==0">今月のデータはありません。</p>
+        <DoughnutChart v-else-if="chartValue.length" :chart-value="chartValue" :labels="chartLabels"
+            :background-color="chartBgColor" />
+        <p v-else-if="chartValue.length == 0">今月のデータはありません。</p>
     </div>
     <div class="container">
         <QTimeline color="secondary" class="tl">
