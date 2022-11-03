@@ -46,13 +46,14 @@ onMounted(async () => {
 </script>
         
 <template>
+    <h2>今月の出費</h2>
     <div class="chart-wrap">
         <span v-if="thisMonthLoading">Loading</span>
         <DoughnutChart v-else-if="chartValue.length" :chart-value="chartValue" :labels="chartLabels"
             :background-color="chartBgColor" />
         <p v-else-if="chartValue.length == 0">今月のデータはありません。</p>
     </div>
-    <div class="container">
+    <div class="tl-wrap">
         <QTimeline color="secondary" class="tl">
             <QTimelineEntry v-for="snap in timelineData" :subtitle="snap.date" :title="snap.category">
                 <div class="tl-inner">
@@ -65,6 +66,11 @@ onMounted(async () => {
 </template>
         
 <style scoped lang="scss">
+h2 {
+    width: 400px;
+    margin: 32px auto 16px;
+    text-align: center;
+}
 .chart-wrap {
     display: flex;
     align-items: center;
@@ -83,7 +89,7 @@ onMounted(async () => {
     }
 }
 
-.container {
+.tl-wrap {
     display: flex;
     justify-content: center;
     padding: 24px;

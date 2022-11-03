@@ -74,7 +74,7 @@ const onKeydown = (e: KeyboardEvent) => {
                         <QPopupProxy cover transition-show="fade" transition-hide="fade">
                             <QDate v-model="date" first-day-of-week="0" mask="YYYY-MM-DD" flat>
                                 <div class="row items-center justify-end">
-                                    <QBtn v-close-popup label="完了" color="primary" flat />
+                                    <QBtn v-close-popup label="閉じる" color="primary" flat />
                                 </div>
                             </QDate>
                         </QPopupProxy>

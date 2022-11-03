@@ -45,6 +45,7 @@ export const updateMonthData = async () => {
     // firestoreに更新
     const statsRef = doc(db, auth.currentUser!.uid, `stats-${thisMonth}`)
     await setDoc(statsRef, {
-        expense: thisMonthStats
+        expense: thisMonthStats,
+        statsMonth: thisMonth
     })
 }
