@@ -9,28 +9,28 @@ import {
     BarElement,
     CategoryScale,
     LinearScale,
-    Plugin
+    Plugin,
+    ChartOptions,
+    ChartData
 } from 'chart.js'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 ChartJS.defaults.font.family = "'Asap', 'Zen Maru Gothic', sans-serif"
 
-interface chartData {
-    labels: String[],
-    datasets: any[]
-}
-
 interface props {
-    chartValue: Number[],
-    labels: String[]
+    chartValue: number[],
+    labels: string[],
+    setMonth: Function
 }
 
 const props = defineProps<props>()
 
-const chartData = ref<chartData>({
+const chartData = ref<ChartData<'bar'>>({
     labels: [],
     datasets: []
 })
+
+const bgs = ref<string[]>(['#ddd0bb', '#ddd0bb', '#ddd0bb', '#ddd0bb', '#ddd0bb', '#fdd835'])
 
 onMounted(() => {
     chartData.value = {
@@ -38,18 +38,30 @@ onMounted(() => {
         datasets: [
             {
                 borderColor: '#f5f2eb',
-                backgroundColor: '#746e6c',
+                borderRadius: 8,
+                backgroundColor: bgs.value,
                 data: props.chartValue
             }
         ]
     }
-    console.log(chartData.value.datasets[0].data)
-    console.log(props.labels)
 })
+
+const options: ChartOptions<'bar'> = {
+    scales: {
+        x: { grid: { color: 'transparent' } }
+    },
+    onClick(event, elements, chart) {
+        console.log(event, elements, chart)
+        for (let i=0; i<6; i++) {
+            bgs.value[i] = i == elements[0].index ? '#fdd835' : '#ddd0bb'
+        }
+        props.setMonth(elements[0].index)
+    },
+}
 </script>
         
 <template>
-    <Bar :chart-data="chartData"></Bar>
+    <Bar :chart-data="chartData" :chart-options="options"></Bar>
 </template>
         
 <style lang="scss">

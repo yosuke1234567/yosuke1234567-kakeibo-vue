@@ -3,8 +3,8 @@ import { signInWithEmailAndPassword } from '@firebase/auth';
 import { ref } from 'vue';
 import { auth } from '../firebase';
 
-const email = ref("")
-const pass = ref("")
+const email = ref('')
+const pass = ref('')
 const isPwd = ref(true)
 
 const onSubmit = (e: Event) => {
@@ -22,11 +22,11 @@ const onSubmit = (e: Event) => {
             <QInput type="email" v-model="email" label="メールアドレス" filled class="full-width" />
             <QInput :type="isPwd ? 'password' : 'text'" v-model="pass" label="パスワード" filled class="full-width">
                 <template v-slot:append>
-                    <QIcon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                    <QIcon :name="isPwd ? 'sym_r_visibility_off' : 'sym_r_visibility'" class="cursor-pointer"
                         @click="isPwd = !isPwd" />
                 </template>
             </QInput>
-            <QBtn type="submit" padding="12px 0" class="full-width">サインイン</QBtn>
+            <QBtn type="submit" color="secondary" text-color="initial" padding="12px 0" class="full-width">サインイン</QBtn>
         </form>
     </div>
 </template>
@@ -36,6 +36,12 @@ div {
     width: 400px;
     max-width: 100%;
     margin: 0 auto;
+}
+
+h2 {
+    margin: 0;
+    padding: 0.875em 0;
+    text-align: center;
 }
 
 form {

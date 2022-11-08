@@ -25,16 +25,36 @@ const toggleLeftDrawer = () => {
     <QLayout view="hhh Lpr fff">
 
         <QDrawer v-model="leftDrawerOpen" side="left" bordered>
-            <h2 class="heading">Expense App</h2>
-            <QList class="u-align-items-center" padding>
-                <QItem clickable :active="location === '/'" active-class="active-item" @click="router.push('/')">ホーム
+            <h2 class="heading"><img src="../assets/yen.svg" alt="">Expense</h2>
+            <QList class="u-align-items-center">
+                <QItem class="item" clickable :active="location === '/'" active-class="active-item"
+                    @click="router.push('/')">
+                    <QItemSection avatar>
+                        <QIcon name="sym_r_home" />
+                    </QItemSection>
+                    <QItemSection>ホーム</QItemSection>
                 </QItem>
-                <QItem clickable :active="location === '/input'" active-class="active-item"
-                    @click="router.push('./input')">入力</QItem>
-                <QItem clickable :active="location === '/stats'" active-class="active-item"
-                    @click="router.push('./stats')">統計</QItem>
-                <QItem clickable :active="location === '/others'" active-class="active-item"
-                    @click="router.push('./others')">その他</QItem>
+                <QItem class="item" clickable :active="location === '/input'" active-class="active-item"
+                    @click="router.push('./input')">
+                    <QItemSection avatar>
+                        <QIcon name="sym_r_edit_square" />
+                    </QItemSection>
+                    <QItemSection>入力</QItemSection>
+                </QItem>
+                <QItem class="item" clickable :active="location === '/stats'" active-class="active-item"
+                    @click="router.push('./stats')">
+                    <QItemSection avatar>
+                        <QIcon name="sym_r_leaderboard" />
+                    </QItemSection>
+                    <QItemSection>統計</QItemSection>
+                </QItem>
+                <QItem class="item" clickable :active="location === '/others'" active-class="active-item"
+                    @click="router.push('./others')">
+                    <QItemSection avatar>
+                        <QIcon name="sym_r_tune" />
+                    </QItemSection>
+                    <QItemSection>その他</QItemSection>
+                </QItem>
             </QList>
         </QDrawer>
 
@@ -47,14 +67,32 @@ const toggleLeftDrawer = () => {
     
 <style scoped lang="scss">
 .heading {
-    margin-left: 16px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 24px 16px;
     color: $primary;
+    line-height: 1.25;
+
+    img {
+        height: 1.5em;
+        vertical-align: bottom;
+        margin-right: 0.5em;
+    }
 }
+
+.page-view {
+    background-color: #f5f2eb;
+}
+
+.item {
+    width: 90%;
+    padding: 12px 20px;
+    margin: 12px auto;
+    border-radius: 8px;
+}
+
 .active-item {
     background-color: #fdd83577;
     color: initial;
-}
-.page-view {
-    background-color: #f5f2eb;
 }
 </style>

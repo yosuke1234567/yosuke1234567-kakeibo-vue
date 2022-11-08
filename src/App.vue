@@ -8,10 +8,12 @@ import SignIn from './pages/SignIn.vue';
 const signInState = ref<Boolean>()
 
 onMounted(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
         // user ? router.push('/main') : router.push('/')
         signInState.value = user ? true : false
     })
+
+    unsubscribe()
 })
 
 </script>

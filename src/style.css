@@ -21,6 +21,13 @@
     -webkit-text-size-adjust: 100%;
 }
 
+:-webkit-autofill,
+:-webkit-autofill:hover, 
+:-webkit-autofill:focus,
+:-webkit-autofill:active {
+    box-shadow: 0 0 0 30px #e9e6df inset !important;
+}
+
 a {
     color: #646cff;
     text-decoration: inherit;

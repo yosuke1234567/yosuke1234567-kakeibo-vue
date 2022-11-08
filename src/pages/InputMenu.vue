@@ -1,27 +1,30 @@
 <script setup lang="ts">
 import { doc, getDoc, setDoc } from '@firebase/firestore';
 import { onMounted, ref } from 'vue';
-import { updateMonthData } from '../components/updateMonthData';
+import { updateMonthlyData } from '../components/updateMonthlyData';
 import { auth, db } from '../firebase';
 
-const date = ref<any>()
-const amount = ref<any>()
+interface category {
+    type: string,
+    color: string
+}
+
+const date = ref('')
+const amount = ref('')
 const memo = ref('')
 
 const category = ref('')
-const options = ref([])
+const options = ref<Array<category['type']>>([])
 
 const uid = ref('')
 
+const calendarErr = ref(false)
 const categoryErr = ref(false)
 const amountErr = ref(false)
 
 const amountReg = /^[1-9][0-9]*$/
 
-interface category {
-    type: String,
-    color: String
-}
+const openDialog = ref(false)
 
 onMounted(async () => {
     if (auth.currentUser) {
@@ -39,7 +42,7 @@ onMounted(async () => {
 const onSubmit = async (e: Event) => {
     e.preventDefault()
 
-    if (date.value === undefined) console.log('calendar error')
+    calendarErr.value = date.value === '' ? true : false
     categoryErr.value = category.value === '' ? true : false
     amountErr.value = !amountReg.test(amount.value) ? true : false
 
@@ -55,8 +58,15 @@ const onSubmit = async (e: Event) => {
             createdAt: id
         })
 
-        await updateMonthData()
+        await updateMonthlyData()
+
+        date.value = ''
+        amount.value = ''
+        category.value = ''
+        memo.value = ''
+
     }
+    openDialog.value = true
 }
 
 const onKeydown = (e: KeyboardEvent) => {
@@ -68,11 +78,13 @@ const onKeydown = (e: KeyboardEvent) => {
     <div class="container">
         <h2>入力</h2>
         <form @submit="onSubmit" class="q-gutter-y-lg input-wrap">
-            <QInput v-model="date" type="date" stack-label label="日付 *" class="u-bg-white u-del-date-icon">
+            <QInput v-model="date" type="date" @keydown="onKeydown" stack-label label="日付 *"
+                class="u-bg-white u-del-date-icon" :class="{ err: calendarErr }">
                 <template v-slot:prepend>
                     <QIcon name="sym_r_event" class="cursor-pointer">
                         <QPopupProxy cover transition-show="fade" transition-hide="fade">
-                            <QDate v-model="date" first-day-of-week="0" mask="YYYY-MM-DD" flat>
+                            <QDate v-model="date" first-day-of-week="0" mask="YYYY-MM-DD" color="secondary"
+                                text-color="dark" flat>
                                 <div class="row items-center justify-end">
                                     <QBtn v-close-popup label="閉じる" color="primary" flat />
                                 </div>
@@ -81,14 +93,14 @@ const onKeydown = (e: KeyboardEvent) => {
                     </QIcon>
                 </template>
             </QInput>
-            <QSelect v-model="category" label="カテゴリー *" :options="options" :class="{err: categoryErr}"
+            <QSelect v-model="category" label="カテゴリー *" :options="options" :class="{ err: categoryErr }"
                 class="u-bg-white">
                 <template v-slot:prepend>
                     <q-icon name="sym_r_category" />
                 </template>
             </QSelect>
             <QInput v-model.number="amount" @keydown="onKeydown" label="金額 *" inputmode="numeric"
-                :class="{err: amountErr}" class="amount-input u-bg-white" autocomplete="off">
+                :class="{ err: amountErr }" class="amount-input u-bg-white" autocomplete="off">
                 <template v-slot:prepend>
                     <q-icon name="sym_r_currency_yen" />
                 </template>
@@ -101,6 +113,17 @@ const onKeydown = (e: KeyboardEvent) => {
             <QBtn type="submit" label="保存する" unelevated color="secondary" text-color="initial" padding="12px 0"
                 class="full-width" />
         </form>
+        <QDialog v-model="openDialog">
+            <QCard class="q-px-lg q-pb-sm">
+                <QCardSection class="dialog-section">
+                    <img src="../assets/bear.png" alt="" class="dialog-img" draggable="false">
+                    <div>保存しました。</div>
+                </QCardSection>
+                <QCardActions>
+                    <QBtn label="閉じる" v-close-popup flat class="q-ml-auto" />
+                </QCardActions>
+            </QCard>
+        </QDialog>
     </div>
 </template>
             
@@ -132,5 +155,14 @@ const onKeydown = (e: KeyboardEvent) => {
 
 .amount-input.err::after {
     content: '半角数字で入力してください。';
+}
+
+.dialog-section {
+    text-align: center;
+    font-size: 1.25rem;
+}
+.dialog-section img {
+    width: 280px;
+    user-select: none;
 }
 </style>

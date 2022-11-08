@@ -4,12 +4,13 @@ import { query, orderBy, limit, collection, doc, getDoc, getDocs, DocumentData }
 import { auth, db } from '../firebase'
 import DoughnutChart from '../components/DoughnutChart.vue'
 
-const timelineData = ref<Array<any>>([])
-const thisMonthLoading = ref<Boolean>(true)
+const timelineData = ref<DocumentData[]>([])
+const thisMonthLoading = ref<boolean>(true)
 
-const chartLabels = ref<Array<any>>([])
-const chartBgColor = ref<Array<any>>([])
-const chartValue = ref<Array<any>>([])
+const chartValue = ref<number[]>([])
+
+const date = new Date()
+const thisMonth = `${date.getFullYear()}-${date.getMonth() + 1}` // YYYY-MM
 
 onMounted(async () => {
     if (auth.currentUser) {
@@ -20,19 +21,6 @@ onMounted(async () => {
         tlSnap.forEach(doc => timelineData.value.push(doc.data()))
         console.log(timelineData.value)
 
-        const categoryRef = doc(db, auth.currentUser!.uid, 'data')
-        const categorySnap = await getDoc(categoryRef)
-        const categories = categorySnap.data()!.category
-
-        interface CategoryDocElm {
-            color: String
-            type: String
-        }
-        chartLabels.value = categories!.map((e: CategoryDocElm) => e.type)
-        chartBgColor.value = categories!.map((e: CategoryDocElm) => e.color)
-
-        const date = new Date()
-        const thisMonth = `${date.getFullYear()}-${date.getMonth() + 1}` // YYYY-MM
         const statsRef = doc(db, auth.currentUser!.uid, `stats-${thisMonth}`)
         const statsData = (await getDoc(statsRef)).data()
         console.log(statsData)
@@ -44,15 +32,18 @@ onMounted(async () => {
 })
 
 </script>
-        
+
 <template>
     <h2>今月の出費</h2>
     <div class="chart-wrap">
         <span v-if="thisMonthLoading">Loading</span>
-        <DoughnutChart v-else-if="chartValue.length" :chart-value="chartValue" :labels="chartLabels"
-            :background-color="chartBgColor" />
-        <p v-else-if="chartValue.length == 0">今月のデータはありません。</p>
+        <DoughnutChart v-else-if="chartValue.length" :month="thisMonth" />
+        <div v-else-if="chartValue.length == 0" class="no-data">
+            <img src="../assets/pigbear.png" alt="">
+            今月のデータはありません。
+        </div>
     </div>
+    <h2>最近の記録</h2>
     <div class="tl-wrap">
         <QTimeline color="secondary" class="tl">
             <QTimelineEntry v-for="snap in timelineData" :subtitle="snap.date" :title="snap.category">
@@ -64,35 +55,52 @@ onMounted(async () => {
         </QTimeline>
     </div>
 </template>
-        
+
 <style scoped lang="scss">
 h2 {
     width: 400px;
     margin: 32px auto 16px;
-    text-align: center;
+    color: #504a44;
 }
+
+h2:nth-of-type(2) {
+    margin: 48px auto 0;
+}
+
 .chart-wrap {
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 400px;
     min-height: 176px;
     margin: 0 auto;
+    box-shadow: rgba(80, 73, 67, 0.2) 0 2px 8px;
+    // border: 1px solid rgba(80, 73, 67, 0.2);
+    border-radius: 8px;
+    background-color: #fffdfa;
+}
 
-    p {
-        width: 100%;
-        margin: 0;
-        padding: 2rem 0;
-        border-radius: 0.375rem;
-        background-color: rgba(80, 73, 67, 0.1);
-        text-align: center;
-        font-size: 1.375rem;
+.no-data {
+    width: 100%;
+    margin: 0;
+    padding: 0 0 20px;
+    border: 1px solid rgba(80, 73, 67, 0.08);
+    border-radius: 8px;
+    background-color: rgba(80, 73, 67, 0.04);
+    text-align: center;
+    font-size: 1.375rem;
+
+    img {
+        display: block;
+        margin: 0 auto;
+        width: 200px;
     }
 }
 
 .tl-wrap {
     display: flex;
     justify-content: center;
-    padding: 24px;
+    padding: 12px 24px;
 }
 
 .tl {
@@ -102,6 +110,10 @@ h2 {
 .tl-inner {
     display: flex;
     justify-content: space-between;
+
+    p {
+        white-space: pre-wrap;
+    }
 
     span {
         display: block;

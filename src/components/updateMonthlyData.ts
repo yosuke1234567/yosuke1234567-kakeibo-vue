@@ -1,18 +1,14 @@
-import { query, collection, doc, getDoc, getDocs, setDoc, where, DocumentData } from "firebase/firestore"
+import { doc, getDoc, setDoc } from "firebase/firestore"
 import { auth, db } from '../firebase'
+import { getMonthlyData } from "./getMonthlyData"
 
-export const updateMonthData = async () => {
-    const colRef = collection(db, auth.currentUser!.uid)
+export const updateMonthlyData = async () => {
     const date = new Date()
     const thisMonth = `${date.getFullYear()}-${date.getMonth() + 1}` // YYYY-MM
 
     // 今月分のデータを取得
-    const thisMonthDocs: DocumentData[] = []
-    const tmq = query(colRef, where('date', '>=', `${thisMonth}-01`))
-    const tmSnap = await getDocs(tmq)
-    tmSnap.forEach(doc => thisMonthDocs.push(doc.data()))
+    const thisMonthDocs = await getMonthlyData(thisMonth)
 
-    
     // ユーザーが設定したカテゴリーを取得
     const categoryRef = doc(db, auth.currentUser!.uid, 'data')
     const categorySnap = await getDoc(categoryRef)
