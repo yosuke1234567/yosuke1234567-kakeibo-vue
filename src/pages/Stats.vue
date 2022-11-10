@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { query, orderBy, collection, doc, getDoc, getDocs, DocumentData } from 'firebase/firestore'
+import { query, orderBy, collection, getDocs, DocumentData } from 'firebase/firestore'
 import { auth, db } from '../firebase'
 import BarChart from '../components/BarChart.vue';
 import DoughnutChart from '../components/DoughnutChart.vue';

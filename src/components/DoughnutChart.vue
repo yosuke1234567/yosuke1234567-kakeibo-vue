@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { query, orderBy, limit, collection, doc, getDoc, getDocs, DocumentData } from 'firebase/firestore'
+import { onMounted, ref, watch } from 'vue'
+import { doc, getDoc, DocumentData } from 'firebase/firestore'
 import { auth, db } from '../firebase';
 import { Doughnut } from 'vue-chartjs'
 import {
@@ -29,9 +29,30 @@ const chartData = ref<ChartData<'doughnut'>>({
     datasets: []
 })
 
+const chartLabels = ref<string[]>([])
+const chartBgColor = ref<string[]>([])
+
+const getChartValue = async () => {
+    const statsRef = doc(db, auth.currentUser!.uid, `stats-${props.month}`)
+    const statsData = (await getDoc(statsRef)).data()
+    const chartValue = await statsData!.expense.map((e: DocumentData) => e.amount)
+
+    chartData.value = {
+        labels: chartLabels.value,
+        datasets: [
+            {
+                borderColor: '#f5f2eb',
+                backgroundColor: chartBgColor.value,
+                data: chartValue
+            }
+        ]
+    }
+    console.log('getChartValue')
+}
+
 onMounted(async () => {
     if (auth.currentUser) {
-        const categoryRef = doc(db, auth.currentUser!.uid, 'data')
+        const categoryRef = doc(db, auth.currentUser.uid, 'data')
         const categorySnap = await getDoc(categoryRef)
         const categories = categorySnap.data()!.category
 
@@ -39,25 +60,14 @@ onMounted(async () => {
             color: string
             type: string
         }
-        const chartLabels: string[] = categories!.map((e: CategoryDocElm) => e.type)
-        const chartBgColor: string[] = categories!.map((e: CategoryDocElm) => e.color)
+        chartLabels.value = categories!.map((e: CategoryDocElm) => e.type)
+        chartBgColor.value = categories!.map((e: CategoryDocElm) => e.color)
 
-        const statsRef = doc(db, auth.currentUser!.uid, `stats-${props.month}`)
-        const statsData = (await getDoc(statsRef)).data()
-        const chartValue = await statsData!.expense.map((e: DocumentData) => e.amount)
-
-        chartData.value = {
-            labels: chartLabels,
-            datasets: [
-                {
-                    borderColor: '#f5f2eb',
-                    backgroundColor: chartBgColor,
-                    data: chartValue
-                }
-            ]
-        }
+        getChartValue()
     }
 })
+
+watch(props, getChartValue)
 
 const options: ChartOptions<'doughnut'> = {
     layout: {
