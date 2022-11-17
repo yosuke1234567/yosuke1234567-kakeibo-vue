@@ -9,5 +9,7 @@ export const getMonthlyData = async (monthArg: string) => {
     const snap = await getDocs(q)
     snap.forEach(doc => docs.push(doc.data()))
 
+    console.log(docs)
+
     return docs
 }

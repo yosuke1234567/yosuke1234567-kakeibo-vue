@@ -16,6 +16,7 @@ import {
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 ChartJS.defaults.font.family = "'Asap', 'Zen Maru Gothic', sans-serif"
+ChartJS.defaults.aspectRatio = 1.333
 
 interface props {
     chartValue: number[],
@@ -48,7 +49,8 @@ onMounted(() => {
 
 const options: ChartOptions<'bar'> = {
     scales: {
-        x: { grid: { color: 'transparent' } }
+        x: { grid: { color: 'transparent' } },
+        y: { ticks: { maxTicksLimit: 6 } }
     },
     onClick(event, elements, chart) {
         console.log(event, elements, chart)

@@ -4,6 +4,7 @@ import { query, orderBy, collection, getDocs, DocumentData } from 'firebase/fire
 import { auth, db } from '../firebase'
 import BarChart from '../components/BarChart.vue';
 import DoughnutChart from '../components/DoughnutChart.vue';
+import { getMonthlyData } from '../components/getMonthlyData';
 
 const chartLabels = ref<Array<string>>([])
 const date = new Date()
@@ -19,10 +20,13 @@ const docData = ref<Array<DocumentData>>([])
 
 const chartValue = ref<Array<number>>([])
 
+const monthlyData = ref<Array<DocumentData>>([])
+
 const monthIndex = ref<string>(`${date.getFullYear()}-${date.getMonth() + 1}`)
-const setMonth = (index: number) => {
+const setMonth = async (index: number) => {
     monthIndex.value = chartLabels.value[index]
     console.log(monthIndex.value)
+    monthlyData.value = await getMonthlyData(monthIndex.value)
 }
 
 onMounted(async () => {
@@ -64,6 +68,12 @@ onMounted(async () => {
     <div class="chart-wrap">
         <BarChart v-if="chartValue.length" :chart-value="chartValue" :labels="chartLabels" :set-month="setMonth" />
         <DoughnutChart :month="monthIndex" />
+        <QList bordered separator>
+            <QItem v-for="snap in monthlyData" clickable>
+                <QItemSection>{{ snap.date }}</QItemSection>
+                <QItemSection>{{ snap.category }} ￥{{ snap.amount }}</QItemSection>
+            </QItem>
+        </QList>
     </div>
 </template>
 
