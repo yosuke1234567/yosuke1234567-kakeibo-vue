@@ -47,7 +47,7 @@ const onSubmit = async (e: Event) => {
     amountErr.value = !amountReg.test(amount.value) ? true : false
 
     if ((typeof (date.value) === 'string') && (category.value !== '') && amountReg.test(amount.value)) {
-        console.log('sent firebase')
+        const monthIndex = new Date(date.value.slice(0, 7)).getTime()
         const id = Date.now()
         const docRef = doc(db, uid.value, `expense-${id}`)
         await setDoc(docRef, {
@@ -55,10 +55,11 @@ const onSubmit = async (e: Event) => {
             category: category.value,
             amount: amount.value,
             memo: memo.value,
+            expenseMonthIndex: monthIndex,
             createdAt: id
         })
 
-        await updateMonthlyData()
+        await updateMonthlyData(monthIndex)
 
         date.value = ''
         amount.value = ''
@@ -81,8 +82,11 @@ const onKeydown = (e: KeyboardEvent) => {
             <QInput v-model="date" type="date" @keydown="onKeydown" stack-label label="日付 *"
                 class="u-bg-white u-del-date-icon" :class="{ err: calendarErr }">
                 <template v-slot:prepend>
-                    <QIcon name="sym_r_event" class="cursor-pointer">
-                        <QPopupProxy cover transition-show="fade" transition-hide="fade">
+                    <q-icon name="sym_r_calendar_today" />
+                </template>
+                <template v-slot:append>
+                    <QBtn icon="sym_r_event" flat round size="md">
+                        <QPopupProxy transition-show="fade" transition-hide="fade">
                             <QDate v-model="date" first-day-of-week="0" mask="YYYY-MM-DD" color="secondary"
                                 text-color="dark" flat>
                                 <div class="row items-center justify-end">
@@ -90,7 +94,7 @@ const onKeydown = (e: KeyboardEvent) => {
                                 </div>
                             </QDate>
                         </QPopupProxy>
-                    </QIcon>
+                    </QBtn>
                 </template>
             </QInput>
             <QSelect v-model="category" label="カテゴリー *" :options="options" :class="{ err: categoryErr }"
@@ -114,13 +118,13 @@ const onKeydown = (e: KeyboardEvent) => {
                 class="full-width" />
         </form>
         <QDialog v-model="openDialog">
-            <QCard class="q-px-lg q-pb-sm">
+            <QCard class="q-px-lg q-pb-md">
                 <QCardSection class="dialog-section">
                     <img src="../assets/bear.png" alt="" class="dialog-img" draggable="false">
-                    <div>保存しました。</div>
+                    <div>保存しました</div>
                 </QCardSection>
                 <QCardActions>
-                    <QBtn label="閉じる" v-close-popup flat class="q-ml-auto" />
+                    <QBtn label="閉じる" v-close-popup outline padding="8px 32px" class="q-mx-auto" />
                 </QCardActions>
             </QCard>
         </QDialog>
@@ -160,9 +164,10 @@ const onKeydown = (e: KeyboardEvent) => {
 .dialog-section {
     text-align: center;
     font-size: 1.25rem;
-}
-.dialog-section img {
-    width: 280px;
-    user-select: none;
+
+    img {
+        width: 250px;
+        user-select: none;
+    }
 }
 </style>

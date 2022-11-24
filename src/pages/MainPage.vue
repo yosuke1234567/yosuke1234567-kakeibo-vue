@@ -24,7 +24,7 @@ const toggleLeftDrawer = () => {
 <template>
     <QLayout view="hhh Lpr fff">
 
-        <QDrawer v-model="leftDrawerOpen" side="left" bordered>
+        <QDrawer v-model="leftDrawerOpen" side="left" bordered class="drawer">
             <h2 class="heading"><img src="../assets/yen.svg" alt="">Expense</h2>
             <QList class="u-align-items-center">
                 <QItem class="item" clickable :active="location === '/'" active-class="active-item"
@@ -48,12 +48,12 @@ const toggleLeftDrawer = () => {
                     </QItemSection>
                     <QItemSection>統計</QItemSection>
                 </QItem>
-                <QItem class="item" clickable :active="location === '/others'" active-class="active-item"
-                    @click="router.push('./others')">
+                <QItem class="item" clickable :active="location === '/mypage'" active-class="active-item"
+                    @click="router.push('./mypage')">
                     <QItemSection avatar>
-                        <QIcon name="sym_r_tune" />
+                        <QIcon name="sym_r_person" />
                     </QItemSection>
-                    <QItemSection>その他</QItemSection>
+                    <QItemSection>マイページ</QItemSection>
                 </QItem>
             </QList>
         </QDrawer>
@@ -66,6 +66,9 @@ const toggleLeftDrawer = () => {
 </template>
     
 <style scoped lang="scss">
+.drawer {
+    background-color: #fffdfa;
+}
 .heading {
     width: 90%;
     margin: 0 auto;

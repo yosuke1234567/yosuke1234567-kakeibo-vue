@@ -16,7 +16,7 @@ export const routes = [
         component: () => import('../pages/Stats.vue'),
     },
     {
-        path: '/others',
-        component: () => import('../pages/Others.vue'),
+        path: '/mypage',
+        component: () => import('../pages/MyPage.vue'),
     },
 ]

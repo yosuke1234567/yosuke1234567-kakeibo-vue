@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { query, orderBy, limit, collection, doc, getDoc, getDocs, DocumentData } from 'firebase/firestore'
+import { query, orderBy, limit, collection, getDocs, DocumentData } from 'firebase/firestore'
 import { auth, db } from '../firebase'
 import DoughnutChart from '../components/DoughnutChart.vue'
+import { getDoughnutValue } from '../components/getDoughnutValue';
 
 const timelineData = ref<DocumentData[]>([])
 const thisMonthLoading = ref<boolean>(true)
 
 const chartValue = ref<number[]>([])
-
-const date = new Date()
-const thisMonth = `${date.getFullYear()}-${date.getMonth() + 1}` // YYYY-MM
 
 onMounted(async () => {
     if (auth.currentUser) {
@@ -21,11 +19,8 @@ onMounted(async () => {
         tlSnap.forEach(doc => timelineData.value.push(doc.data()))
         console.log(timelineData.value)
 
-        const statsRef = doc(db, auth.currentUser!.uid, `stats-${thisMonth}`)
-        const statsData = (await getDoc(statsRef)).data()
-        console.log(statsData)
-
-        chartValue.value = await statsData!.expense.map((e: DocumentData) => e.amount)
+        const date = new Date()
+        chartValue.value = await getDoughnutValue(`${date.getFullYear()}-${date.getMonth() + 1}`)
 
         thisMonthLoading.value = false
     }
@@ -37,7 +32,7 @@ onMounted(async () => {
     <h2>今月の出費</h2>
     <div class="chart-wrap">
         <span v-if="thisMonthLoading">Loading</span>
-        <DoughnutChart v-else-if="chartValue.length" :month="thisMonth" />
+        <DoughnutChart v-else-if="chartValue.length" :chart-value="chartValue" />
         <div v-else-if="chartValue.length == 0" class="no-data">
             <img src="../assets/pigbear.png" alt="">
             今月のデータはありません。
@@ -60,7 +55,6 @@ onMounted(async () => {
 h2 {
     width: 400px;
     margin: 32px auto 16px;
-    color: #504a44;
 }
 
 h2:nth-of-type(2) {

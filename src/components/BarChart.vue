@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { Bar } from 'vue-chartjs'
 import {
     Chart as ChartJS,
@@ -33,6 +33,10 @@ const chartData = ref<ChartData<'bar'>>({
 
 const bgs = ref<string[]>(['#ddd0bb', '#ddd0bb', '#ddd0bb', '#ddd0bb', '#ddd0bb', '#fdd835'])
 
+const updateValue = () => {
+    chartData.value.datasets[0].data = props.chartValue
+}
+
 onMounted(() => {
     chartData.value = {
         labels: props.labels,
@@ -47,10 +51,18 @@ onMounted(() => {
     }
 })
 
+watch(props, updateValue)
+
 const options: ChartOptions<'bar'> = {
     scales: {
         x: { grid: { color: 'transparent' } },
         y: { ticks: { maxTicksLimit: 6 } }
+    },
+    plugins: {
+        legend: { display: false }
+    },
+    layout: {
+        padding: 20
     },
     onClick(event, elements, chart) {
         console.log(event, elements, chart)

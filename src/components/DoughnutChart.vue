@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import { doc, getDoc, DocumentData } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
 import { auth, db } from '../firebase';
 import { Doughnut } from 'vue-chartjs'
 import {
@@ -19,7 +19,7 @@ ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale)
 ChartJS.defaults.font.family = "'Asap', 'Zen Maru Gothic', sans-serif"
 
 interface props {
-    month: string
+    chartValue: number[],
 }
 
 const props = defineProps<props>()
@@ -32,22 +32,17 @@ const chartData = ref<ChartData<'doughnut'>>({
 const chartLabels = ref<string[]>([])
 const chartBgColor = ref<string[]>([])
 
-const getChartValue = async () => {
-    const statsRef = doc(db, auth.currentUser!.uid, `stats-${props.month}`)
-    const statsData = (await getDoc(statsRef)).data()
-    const chartValue = await statsData!.expense.map((e: DocumentData) => e.amount)
-
+const setChartValue = () => {
     chartData.value = {
         labels: chartLabels.value,
         datasets: [
             {
                 borderColor: '#f5f2eb',
                 backgroundColor: chartBgColor.value,
-                data: chartValue
+                data: props.chartValue
             }
         ]
     }
-    console.log('getChartValue')
 }
 
 onMounted(async () => {
@@ -63,11 +58,11 @@ onMounted(async () => {
         chartLabels.value = categories!.map((e: CategoryDocElm) => e.type)
         chartBgColor.value = categories!.map((e: CategoryDocElm) => e.color)
 
-        getChartValue()
+        setChartValue()
     }
 })
 
-watch(props, getChartValue)
+watch(props, setChartValue)
 
 const options: ChartOptions<'doughnut'> = {
     layout: {

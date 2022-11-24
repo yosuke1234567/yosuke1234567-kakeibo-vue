@@ -52,6 +52,11 @@ body {
 .q-btn {
     text-transform: none;
 }
+
+.q-card {
+    background-color: #fffdfa;
+}
+
 .q-layout:focus-visible {
     outline: 0;
 }
