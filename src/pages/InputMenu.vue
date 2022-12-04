@@ -16,8 +16,6 @@ const memo = ref('')
 const category = ref('')
 const options = ref<Array<category['type']>>([])
 
-const uid = ref('')
-
 const calendarErr = ref(false)
 const categoryErr = ref(false)
 const amountErr = ref(false)
@@ -34,8 +32,6 @@ onMounted(async () => {
         if (docObj) {
             options.value = docObj.category.map((e: category) => e.type)
         }
-
-        uid.value = auth.currentUser.uid
     }
 })
 
@@ -49,7 +45,7 @@ const onSubmit = async (e: Event) => {
     if ((typeof (date.value) === 'string') && (category.value !== '') && amountReg.test(amount.value)) {
         const monthIndex = new Date(date.value.slice(0, 7)).getTime()
         const id = Date.now()
-        const docRef = doc(db, uid.value, `expense-${id}`)
+        const docRef = doc(db, auth.currentUser!.uid, `expense-${id}`)
         await setDoc(docRef, {
             date: date.value,
             category: category.value,
@@ -66,8 +62,8 @@ const onSubmit = async (e: Event) => {
         category.value = ''
         memo.value = ''
 
+        openDialog.value = true
     }
-    openDialog.value = true
 }
 
 const onKeydown = (e: KeyboardEvent) => {

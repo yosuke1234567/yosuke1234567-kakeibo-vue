@@ -5,12 +5,12 @@ import { useRoute, useRouter } from 'vue-router';
 const router = useRouter()
 const route = useRoute()
 
-const location = ref<String>(route.path)
+const location = ref<string>(route.path)
 
 // ナビゲーションの後に実行
 router.afterEach(() => {
+    // drawerのactiveを記憶
     location.value = route.path
-    console.log('afterEach')
 })
 
 const leftDrawerOpen = ref(true)

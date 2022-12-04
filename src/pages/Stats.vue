@@ -32,16 +32,28 @@ const setLabels = () => {
 
 const barValue = ref<number[]>([])
 const doughnutValue = ref<number[]>([])
+const doughnutSum = ref<number>()
+
+const setDoughnutSum = () => {
+    let sum = 0
+    for (let i=0; i<doughnutValue.value.length; i++) {
+        sum += doughnutValue.value[i]
+    }
+    doughnutSum.value = sum
+}
 
 const monthlyData = ref<DocumentData[]>([])
 
 const monthIndex = ref<string>(`${date.getFullYear()}-${date.getMonth() + 1}`)
+const monthIndexNum = ref<number>(5) // activeValue用のindex
 const activeValue = ref<number>()
 const setMonth = async (index: number) => {
     if (monthIndex.value !== chartLabels.value[index]) openDetail.value = false
+    monthIndexNum.value = index
     monthIndex.value = chartLabels.value[index]
     activeValue.value = barValue.value[index]
     doughnutValue.value = await getDoughnutValue(monthIndex.value)
+    setDoughnutSum()
 }
 
 const openDetail = ref(false)
@@ -55,9 +67,11 @@ onMounted(async () => {
         barValue.value = await getBarValue(chartLabels.value)
         doughnutValue.value = await getDoughnutValue(monthIndex.value)
         activeValue.value = barValue.value[5]
+        setDoughnutSum()
     }
 })
 
+// ページネーション
 const navigateBar = async (margin: number) => {
     monthNum.value = monthNum.value + margin
     chartLabels.value.splice(0)
@@ -85,6 +99,8 @@ const deleteData = async () => {
     barValue.value = await getBarValue(chartLabels.value)
     doughnutValue.value = await getDoughnutValue(monthIndex.value)
 
+    activeValue.value = barValue.value[monthIndexNum.value]
+    setDoughnutSum()
     openDelete.value = false
 }
 
@@ -93,8 +109,9 @@ const deleteData = async () => {
 <template>
     <h2>統計</h2>
     <div class="chart-wrap">
-        <div v-if="activeValue" class="amount-area">
-            {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月 ￥{{ activeValue }}
+        <div class="amount-area">
+            {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
+            <span v-if="(activeValue || activeValue == 0)">￥{{ activeValue }}</span>
         </div>
         <div v-if="barValue.length">
             <BarChart :chart-value="barValue" :labels="chartLabels" :set-month="setMonth" />
@@ -103,9 +120,9 @@ const deleteData = async () => {
                 <QBtn @click="navigateBar(6)" icon="sym_r_navigate_next" size="md" flat round />
             </div>
         </div>
-        <DoughnutChart v-if="doughnutValue.length" :chart-value="doughnutValue" />
+        <DoughnutChart v-if="doughnutSum" :chart-value="doughnutValue" />
     </div>
-    <div class="detail-wrap">
+    <div v-if="doughnutSum" class="detail-wrap">
         <QCard v-if="openDetail" transition-show="fade" transition-hide="fade" class="full-width" flat bordered>
             <div class="detail-title">
                 {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
@@ -147,7 +164,8 @@ const deleteData = async () => {
 <style lang="scss" scoped>
 h2 {
     text-align: center;
-    margin: 32px auto 16px;
+    margin: 0;
+    padding: 32px 0 16px;
 }
 
 .chart-wrap,
@@ -157,7 +175,7 @@ h2 {
 }
 
 .chart-wrap {
-    min-height: 700px;
+    min-height: 400px;
     text-align: center;
 }
 

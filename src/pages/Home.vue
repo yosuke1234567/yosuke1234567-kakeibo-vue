@@ -6,9 +6,9 @@ import DoughnutChart from '../components/DoughnutChart.vue'
 import { getDoughnutValue } from '../components/getDoughnutValue';
 
 const timelineData = ref<DocumentData[]>([])
-const thisMonthLoading = ref<boolean>(true)
 
 const chartValue = ref<number[]>([])
+const chartSum = ref<number>()
 
 onMounted(async () => {
     if (auth.currentUser) {
@@ -22,7 +22,11 @@ onMounted(async () => {
         const date = new Date()
         chartValue.value = await getDoughnutValue(`${date.getFullYear()}-${date.getMonth() + 1}`)
 
-        thisMonthLoading.value = false
+        let sum = 0
+        for (let i = 0; i < chartValue.value.length; i++) {
+            sum += chartValue.value[i]
+        }
+        chartSum.value = sum
     }
 })
 
@@ -31,12 +35,12 @@ onMounted(async () => {
 <template>
     <h2>今月の出費</h2>
     <div class="chart-wrap">
-        <span v-if="thisMonthLoading">Loading</span>
-        <DoughnutChart v-else-if="chartValue.length" :chart-value="chartValue" />
-        <div v-else-if="chartValue.length == 0" class="no-data">
+        <div v-if="chartSum == 0" class="no-data">
             <img src="../assets/pigbear.png" alt="">
             今月のデータはありません。
         </div>
+        <DoughnutChart v-else-if="chartValue.length" :chart-value="chartValue" />
+        <span v-else>Loading</span>
     </div>
     <h2>最近の記録</h2>
     <div class="tl-wrap">
@@ -78,9 +82,8 @@ h2:nth-of-type(2) {
     width: 100%;
     margin: 0;
     padding: 0 0 20px;
-    border: 1px solid rgba(80, 73, 67, 0.08);
-    border-radius: 8px;
-    background-color: rgba(80, 73, 67, 0.04);
+    // border: 1px solid rgba(80, 73, 67, 0.08);
+    // background-color: rgba(80, 73, 67, 0.04);
     text-align: center;
     font-size: 1.375rem;
 

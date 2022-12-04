@@ -5,22 +5,23 @@ import { auth } from './firebase';
 import MainPage from './pages/MainPage.vue';
 import SignIn from './pages/SignIn.vue';
 
-const signInState = ref<Boolean>()
+const signInState = ref<boolean>()
 
-onMounted(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-        // user ? router.push('/main') : router.push('/')
-        signInState.value = user ? true : false
-    })
-
-    unsubscribe()
+const unsubscribe = onAuthStateChanged(auth, (user) => {
+    signInState.value = user ? true : false
+    console.log('unsubscribe')
 })
 
+onMounted(() => unsubscribe())
+
+const a = () => {
+    signInState.value = auth.currentUser ? true : false
+}
 </script>
 
 <template>
     <MainPage v-if="signInState" />
-    <SignIn v-else-if="signInState === false" />
+    <SignIn v-else-if="signInState === false" :a="a" />
     <div v-else class="loading"><QSpinnerOval size="3em" /></div>
 </template>
 
