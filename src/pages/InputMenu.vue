@@ -75,55 +75,55 @@ const onKeydown = (e: KeyboardEvent) => {
     <div class="container">
         <h2>入力</h2>
         <form @submit="onSubmit" class="q-gutter-y-lg input-wrap">
-            <QInput v-model="date" type="date" @keydown="onKeydown" stack-label label="日付 *"
+            <q-input v-model="date" type="date" @keydown="onKeydown" stack-label label="日付 *"
                 class="u-bg-white u-del-date-icon" :class="{ err: calendarErr }">
                 <template v-slot:prepend>
                     <q-icon name="sym_r_calendar_today" />
                 </template>
                 <template v-slot:append>
-                    <QBtn icon="sym_r_event" flat round size="md">
-                        <QPopupProxy transition="fade">
-                            <QDate v-model="date" first-day-of-week="0" mask="YYYY-MM-DD" color="secondary"
+                    <q-btn icon="sym_r_event" flat round size="md">
+                        <q-popup-proxy transition="fade">
+                            <q-date v-model="date" first-day-of-week="0" mask="YYYY-MM-DD" color="secondary"
                                 text-color="dark" flat>
                                 <div class="row items-center justify-end">
-                                    <QBtn v-close-popup label="閉じる" color="primary" flat />
+                                    <q-btn v-close-popup label="閉じる" color="primary" flat />
                                 </div>
-                            </QDate>
-                        </QPopupProxy>
-                    </QBtn>
+                            </q-date>
+                        </q-popup-proxy>
+                    </q-btn>
                 </template>
-            </QInput>
-            <QSelect v-model="category" label="カテゴリー *" :options="options" :class="{ err: categoryErr }"
+            </q-input>
+            <q-select v-model="category" label="カテゴリー *" :options="options" :class="{ err: categoryErr }"
                 class="u-bg-white">
                 <template v-slot:prepend>
                     <q-icon name="sym_r_category" />
                 </template>
-            </QSelect>
-            <QInput v-model.number="amount" @keydown="onKeydown" label="金額 *" inputmode="numeric"
+            </q-select>
+            <q-input v-model.number="amount" @keydown="onKeydown" label="金額 *" inputmode="numeric"
                 :class="{ err: amountErr }" class="amount-input u-bg-white" autocomplete="off">
                 <template v-slot:prepend>
                     <q-icon name="sym_r_currency_yen" />
                 </template>
-            </QInput>
-            <QInput v-model="memo" label="メモ" autogrow class="u-bg-white">
+            </q-input>
+            <q-input v-model="memo" label="メモ" autogrow class="u-bg-white">
                 <template v-slot:prepend>
                     <q-icon name="sym_r_edit" />
                 </template>
-            </QInput>
-            <QBtn type="submit" label="保存する" unelevated color="secondary" text-color="initial" padding="12px 0"
+            </q-input>
+            <q-btn type="submit" label="保存する" unelevated color="secondary" text-color="initial" padding="12px 0"
                 class="full-width" />
         </form>
-        <QDialog v-model="openDialog">
-            <QCard class="q-px-lg q-pb-md">
-                <QCardSection class="dialog-section">
+        <q-dialog v-model="openDialog">
+            <q-card class="q-px-lg q-pb-md">
+                <q-card-section class="dialog-section">
                     <img src="../assets/bear.png" alt="" class="dialog-img" draggable="false">
                     <div>保存しました</div>
-                </QCardSection>
-                <QCardActions>
-                    <QBtn label="閉じる" v-close-popup outline padding="8px 32px" class="q-mx-auto" />
-                </QCardActions>
-            </QCard>
-        </QDialog>
+                </q-card-section>
+                <q-card-actions>
+                    <q-btn label="閉じる" v-close-popup outline padding="8px 32px" class="q-mx-auto" />
+                </q-card-actions>
+            </q-card>
+        </q-dialog>
     </div>
 </template>
             

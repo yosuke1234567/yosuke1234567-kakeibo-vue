@@ -131,48 +131,48 @@ const deleteData = async () => {
         <div v-if="barValue.length">
             <BarChart :chart-value="barValue" :labels="chartLabels" :bg="barBg" :set-month="setMonth" />
             <div class="pagination">
-                <QBtn @click="navigateBar(-6)" icon="sym_r_navigate_before" size="md" flat round class="q-mr-sm" />
-                <QBtn @click="navigateBar(6)" icon="sym_r_navigate_next" size="md" flat round />
+                <q-btn @click="navigateBar(-6)" icon="sym_r_navigate_before" size="md" flat round class="q-mr-sm" />
+                <q-btn @click="navigateBar(6)" icon="sym_r_navigate_next" size="md" flat round />
             </div>
         </div>
         <DoughnutChart v-if="doughnutSum" :chart-value="doughnutValue" />
     </div>
     <div v-if="doughnutSum" class="detail-wrap">
-        <QCard v-if="openDetail" transition="fade" class="full-width" flat bordered>
+        <q-card v-if="openDetail" transition="fade" class="full-width" flat bordered>
             <div class="detail-title">
                 {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
             </div>
-            <QCardSection class="q-py-sm">
-                <QList separator>
-                    <QItem v-for="snap in monthlyData" class="q-pa-md">
-                        <QItemSection avatar class="q-pr-lg">
-                            <QAvatar color="primary" text-color="white" size="md" rounded>{{ snap.date.slice(8) }}
-                            </QAvatar>
-                        </QItemSection>
-                        <QItemSection>
-                            <QItemLabel>￥{{ snap.amount }} - {{ snap.category }}</QItemLabel>
-                            <QItemLabel caption class="">{{ snap.memo }}</QItemLabel>
-                        </QItemSection>
-                        <QItemSection side>
-                            <QBtn @click="showDeleteDialog(snap.createdAt)" icon="sym_r_delete" size="md" flat round />
-                        </QItemSection>
-                    </QItem>
-                </QList>
-                <QDialog v-model="openDelete">
-                    <QCard class="dialog-card">
-                        <QCardSection class="dialog-section">
+            <q-card-section class="q-py-sm">
+                <q-list separator>
+                    <q-item v-for="snap in monthlyData" class="q-pa-md">
+                        <q-item-section avatar class="q-pr-lg">
+                            <q-avatar color="primary" text-color="white" size="md" rounded>{{ snap.date.slice(8) }}
+                            </q-avatar>
+                        </q-item-section>
+                        <q-item-section>
+                            <q-item-label>￥{{ snap.amount }} - {{ snap.category }}</q-item-label>
+                            <q-item-label caption>{{ snap.memo }}</q-item-label>
+                        </q-item-section>
+                        <q-item-section side>
+                            <q-btn @click="showDeleteDialog(snap.createdAt)" icon="sym_r_delete" size="md" flat round />
+                        </q-item-section>
+                    </q-item>
+                </q-list>
+                <q-dialog v-model="openDelete">
+                    <q-card class="dialog-card">
+                        <q-card-section class="dialog-section">
                             <img src="../assets/honey.png" alt="" draggable="false">
                             <div>削除しますか？</div>
-                        </QCardSection>
-                        <QCardActions class="justify-end">
-                            <QBtn label="キャンセル" @click="openDelete = false" class="col" />
-                            <QBtn label="OK" @click="deleteData" color="secondary" text-color="initial" class="col" />
-                        </QCardActions>
-                    </QCard>
-                </QDialog>
-            </QCardSection>
-        </QCard>
-        <QBtn v-else @click="showDetail" label="詳細を表示" outline padding="8px 32px" class="block q-mx-auto" />
+                        </q-card-section>
+                        <q-card-actions class="justify-end">
+                            <q-btn label="キャンセル" @click="openDelete = false" class="col" />
+                            <q-btn label="OK" @click="deleteData" color="secondary" text-color="initial" class="col" />
+                        </q-card-actions>
+                    </q-card>
+                </q-dialog>
+            </q-card-section>
+        </q-card>
+        <q-btn v-else @click="showDetail" label="詳細を表示" outline padding="8px 32px" class="block q-mx-auto" />
     </div>
 </template>
 

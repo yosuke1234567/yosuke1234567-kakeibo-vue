@@ -25,14 +25,14 @@ const onSubmit = async (e: Event) => {
     <div class="container">
         <h2>サインイン</h2>
         <form @submit="onSubmit" class="q-gutter-y-lg">
-            <QInput type="email" v-model="email" label="メールアドレス" class="full-width u-bg-white" />
-            <QInput :type="isPwd ? 'password' : 'text'" v-model="pass" label="パスワード" class="full-width u-bg-white">
+            <q-input type="email" v-model="email" label="メールアドレス" class="full-width u-bg-white" />
+            <q-input :type="isPwd ? 'password' : 'text'" v-model="pass" label="パスワード" class="full-width u-bg-white">
                 <template v-slot:append>
-                    <QIcon :name="isPwd ? 'sym_r_visibility_off' : 'sym_r_visibility'" class="cursor-pointer"
+                    <q-icon :name="isPwd ? 'sym_r_visibility_off' : 'sym_r_visibility'" class="cursor-pointer"
                         @click="isPwd = !isPwd" />
                 </template>
-            </QInput>
-            <QBtn type="submit" label="サインイン" unelevated color="secondary" text-color="initial" padding="12px 0" class="full-width" />
+            </q-input>
+            <q-btn type="submit" label="サインイン" unelevated color="secondary" text-color="initial" padding="12px 0" class="full-width" />
         </form>
     </div>
 </template>

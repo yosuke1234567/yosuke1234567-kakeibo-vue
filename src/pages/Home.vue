@@ -44,14 +44,14 @@ onMounted(async () => {
     </div>
     <h2>最近の記録</h2>
     <div class="tl-wrap">
-        <QTimeline color="secondary" class="tl">
-            <QTimelineEntry v-for="snap in timelineData" :subtitle="snap.date" :title="snap.category">
+        <q-timeline color="secondary" class="tl">
+            <q-timeline-entry v-for="snap in timelineData" :subtitle="snap.date" :title="snap.category">
                 <div class="tl-inner">
                     <p>{{ snap.memo }}</p>
                     <span>￥{{ snap.amount }}</span>
                 </div>
-            </QTimelineEntry>
-        </QTimeline>
+            </q-timeline-entry>
+        </q-timeline>
     </div>
 </template>
 

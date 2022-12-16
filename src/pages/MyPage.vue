@@ -89,87 +89,87 @@ const addCategory = async () => {
     <div class="container">
         <h2 class="text-center">マイページ</h2>
         <div>{{ email }}</div>
-        <QCard flat bordered class="q-mt-sm">
-            <QItem @click="confirmSignOut = true" clickable class="q-px-lg q-py-md">
-                <QItemSection avatar>
-                    <QIcon name="sym_r_logout" />
-                </QItemSection>
-                <QItemSection>サインアウト</QItemSection>
-            </QItem>
-        </QCard>
-        <QDialog v-model="confirmSignOut">
-            <QCard class="q-px-lg q-py-md">
-                <QCardSection class="dialog-section">
+        <q-card flat bordered class="q-mt-sm">
+            <q-item @click="confirmSignOut = true" clickable class="q-px-lg q-py-md">
+                <q-item-section avatar>
+                    <q-icon name="sym_r_logout" />
+                </q-item-section>
+                <q-item-section>サインアウト</q-item-section>
+            </q-item>
+        </q-card>
+        <q-dialog v-model="confirmSignOut">
+            <q-card class="q-px-lg q-py-md">
+                <q-card-section class="dialog-section">
                     <div>サインアウトしますか？</div>
-                </QCardSection>
-                <QCardActions class="justify-end">
-                    <QBtn label="キャンセル" @click="confirmSignOut = false" />
-                    <QBtn label="OK" @click="signOut" color="secondary" text-color="initial" />
-                </QCardActions>
-            </QCard>
-        </QDialog>
+                </q-card-section>
+                <q-card-actions class="justify-end">
+                    <q-btn label="キャンセル" @click="confirmSignOut = false" />
+                    <q-btn label="OK" @click="signOut" color="secondary" text-color="initial" />
+                </q-card-actions>
+            </q-card>
+        </q-dialog>
         <div class="category-wrap">
             <div class="category-head">
                 <h3>カテゴリー</h3>
-                <!-- <QBtn :label="(isEditing ? '完了' : '編集')" @click="(isEditing = !isEditing)" color="primary" flat /> -->
+                <!-- <q-btn :label="(isEditing ? '完了' : '編集')" @click="(isEditing = !isEditing)" color="primary" flat /> -->
             </div>
-            <QCard flat bordered class="q-mb-md">
-                <QItem @click="openAdd = true" clickable class="q-px-lg q-py-md">
-                    <QItemSection avatar>
-                        <QIcon name="sym_r_add" />
-                    </QItemSection>
-                    <QItemSection>カテゴリーを追加</QItemSection>
-                </QItem>
-            </QCard>
-            <QDialog v-model="openAdd">
-                <QCard class="add-dialog">
+            <q-card flat bordered class="q-mb-md">
+                <q-item @click="openAdd = true" clickable class="q-px-lg q-py-md">
+                    <q-item-section avatar>
+                        <q-icon name="sym_r_add" />
+                    </q-item-section>
+                    <q-item-section>カテゴリーを追加</q-item-section>
+                </q-item>
+            </q-card>
+            <q-dialog v-model="openAdd">
+                <q-card class="add-dialog">
                     <h3 class="text-center">カテゴリーを追加</h3>
-                    <QInput v-model="newCategory" label="カテゴリー名" class="q-mb-lg">
+                    <q-input v-model="newCategory" label="カテゴリー名" class="q-mb-lg">
                         <template v-slot:prepend>
                             <q-icon name="sym_r_edit" />
                         </template>
-                    </QInput>
-                    <QColor v-model="newColor" :palette="palette" default-view="palette" no-header-tabs bordered
+                    </q-input>
+                    <q-color v-model="newColor" :palette="palette" default-view="palette" no-header-tabs bordered
                         class="color-picker q-mx-auto" />
-                    <QBtn label="保存" @click="addCategory" color="secondary" text-color="initial"
+                    <q-btn label="保存" @click="addCategory" color="secondary" text-color="initial"
                         class="full-width q-mt-lg q-mb-md" />
-                    <QBtn label="キャンセル" @click="openAdd = false" class="full-width" />
-                </QCard>
-            </QDialog>
-            <QCard v-if="categories" flat bordered>
-                <QList separator>
-                    <QItem v-for="(category, index) in categories" clickable @click="onEdit(index)"
+                    <q-btn label="キャンセル" @click="openAdd = false" class="full-width" />
+                </q-card>
+            </q-dialog>
+            <q-card v-if="categories" flat bordered>
+                <q-list separator>
+                    <q-item v-for="(category, index) in categories" clickable @click="onEdit(index)"
                         class="q-px-lg category-item">
-                        <QItemSection side>
+                        <q-item-section side>
                             <div :style="{ backgroundColor: category.color }" class="category-color"></div>
-                        </QItemSection>
-                        <QItemSection>
+                        </q-item-section>
+                        <q-item-section>
                             {{ category.type }}
-                        </QItemSection>
-                    </QItem>
-                </QList>
-            </QCard>
-            <QDialog v-model="isEditing">
-                <QCard class="q-pa-lg">
-                    <QColor v-model="pickedColor" :palette="palette" default-view="palette" no-header-tabs bordered
+                        </q-item-section>
+                    </q-item>
+                </q-list>
+            </q-card>
+            <q-dialog v-model="isEditing">
+                <q-card class="q-pa-lg">
+                    <q-color v-model="pickedColor" :palette="palette" default-view="palette" no-header-tabs bordered
                         class="color-picker" />
-                    <QBtn label="保存" @click="saveColor" color="secondary" text-color="initial"
+                    <q-btn label="保存" @click="saveColor" color="secondary" text-color="initial"
                         class="full-width q-my-md" />
-                    <QBtn label="キャンセル" @click="isEditing = false" class="full-width" />
-                    <QBtn label="削除" @click="confirmDelete = true" text-color="red-5" outline class="full-width q-mt-xl" />
-                </QCard>
-            </QDialog>
-            <QDialog v-model="confirmDelete">
-                <QCard class="q-px-lg q-py-md">
-                    <QCardSection class="dialog-section">
+                    <q-btn label="キャンセル" @click="isEditing = false" class="full-width" />
+                    <q-btn label="削除" @click="confirmDelete = true" text-color="red-5" outline class="full-width q-mt-xl" />
+                </q-card>
+            </q-dialog>
+            <q-dialog v-model="confirmDelete">
+                <q-card class="q-px-lg q-py-md">
+                    <q-card-section class="dialog-section">
                         <div>削除しますか？</div>
-                    </QCardSection>
-                    <QCardActions class="justify-end">
-                        <QBtn label="キャンセル" @click="confirmDelete = false" />
-                        <QBtn label="OK" @click="deleteCategory" color="secondary" text-color="initial" />
-                    </QCardActions>
-                </QCard>
-            </QDialog>
+                    </q-card-section>
+                    <q-card-actions class="justify-end">
+                        <q-btn label="キャンセル" @click="confirmDelete = false" />
+                        <q-btn label="OK" @click="deleteCategory" color="secondary" text-color="initial" />
+                    </q-card-actions>
+                </q-card>
+            </q-dialog>
         </div>
     </div>
 </template>
