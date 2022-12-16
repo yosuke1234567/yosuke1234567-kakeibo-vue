@@ -82,7 +82,7 @@ const onKeydown = (e: KeyboardEvent) => {
                 </template>
                 <template v-slot:append>
                     <QBtn icon="sym_r_event" flat round size="md">
-                        <QPopupProxy transition-show="fade" transition-hide="fade">
+                        <QPopupProxy transition="fade">
                             <QDate v-model="date" first-day-of-week="0" mask="YYYY-MM-DD" color="secondary"
                                 text-color="dark" flat>
                                 <div class="row items-center justify-end">

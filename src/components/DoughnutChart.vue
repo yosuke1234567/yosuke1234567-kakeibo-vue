@@ -19,7 +19,7 @@ ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale)
 ChartJS.defaults.font.family = "'Asap', 'Zen Maru Gothic', sans-serif"
 
 interface props {
-    chartValue: number[],
+    chartValue: number[]
 }
 
 const props = defineProps<props>()

@@ -14,14 +14,14 @@ const unsubscribe = onAuthStateChanged(auth, (user) => {
 
 onMounted(() => unsubscribe())
 
-const a = () => {
+const verify = () => {
     signInState.value = auth.currentUser ? true : false
 }
 </script>
 
 <template>
     <MainPage v-if="signInState" />
-    <SignIn v-else-if="signInState === false" :a="a" />
+    <SignIn v-else-if="signInState === false" :verify="verify" />
     <div v-else class="loading"><QSpinnerOval size="3em" /></div>
 </template>
 

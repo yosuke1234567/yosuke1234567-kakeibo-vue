@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import { auth } from '../firebase';
 
 interface props {
-    a: Function
+    verify: Function
 }
 const props = defineProps<props>()
 
@@ -16,7 +16,7 @@ const onSubmit = async (e: Event) => {
     e.preventDefault()
     await signInWithEmailAndPassword(auth, email.value, pass.value)
     console.log('sign in')
-    props.a()
+    props.verify()
 }
 
 </script>

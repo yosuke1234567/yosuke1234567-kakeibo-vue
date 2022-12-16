@@ -19,8 +19,9 @@ ChartJS.defaults.font.family = "'Asap', 'Zen Maru Gothic', sans-serif"
 ChartJS.defaults.aspectRatio = 1.333
 
 interface props {
-    chartValue: number[],
-    labels: string[],
+    chartValue: number[]
+    labels: string[]
+    bg: string[]
     setMonth: Function
 }
 
@@ -31,10 +32,9 @@ const chartData = ref<ChartData<'bar'>>({
     datasets: []
 })
 
-const bgs = ref<string[]>(['#ddd0bb', '#ddd0bb', '#ddd0bb', '#ddd0bb', '#ddd0bb', '#fdd835'])
-
 const updateValue = () => {
     chartData.value.datasets[0].data = props.chartValue
+    chartData.value.datasets[0].backgroundColor = props.bg
 }
 
 onMounted(() => {
@@ -44,7 +44,7 @@ onMounted(() => {
             {
                 borderColor: '#f5f2eb',
                 borderRadius: 8,
-                backgroundColor: bgs.value,
+                backgroundColor: props.bg,
                 data: props.chartValue
             }
         ]
@@ -66,9 +66,6 @@ const options: ChartOptions<'bar'> = {
     },
     onClick(event, elements, chart) {
         console.log(event, elements, chart)
-        for (let i=0; i<6; i++) {
-            bgs.value[i] = i == elements[0].index ? '#fdd835' : '#ddd0bb'
-        }
         props.setMonth(elements[0].index)
     },
 }

@@ -30,32 +30,38 @@ const setLabels = () => {
     console.log(chartLabels.value)
 }
 
-const barValue = ref<number[]>([])
 const doughnutValue = ref<number[]>([])
 const doughnutSum = ref<number>()
 
 const setDoughnutSum = () => {
     let sum = 0
-    for (let i=0; i<doughnutValue.value.length; i++) {
+    for (let i = 0; i < doughnutValue.value.length; i++) {
         sum += doughnutValue.value[i]
     }
     doughnutSum.value = sum
 }
 
-const monthlyData = ref<DocumentData[]>([])
-
+const barValue = ref<number[]>([])
+const barBg = ref<string[]>(['#ddd0bb', '#ddd0bb', '#ddd0bb', '#ddd0bb', '#ddd0bb', '#fdd835'])
 const monthIndex = ref<string>(`${date.getFullYear()}-${date.getMonth() + 1}`)
-const monthIndexNum = ref<number>(5) // activeValue用のindex
+const monthIndexNum = ref<number>(5) // activeのbarValueが何番目かを保存
 const activeValue = ref<number>()
+const barPage = ref<number>(0) // 現在表示している月があるページを0とする
+
 const setMonth = async (index: number) => {
     if (monthIndex.value !== chartLabels.value[index]) openDetail.value = false
     monthIndexNum.value = index
     monthIndex.value = chartLabels.value[index]
     activeValue.value = barValue.value[index]
+    barPage.value = 0
+    for (let i = 0; i < 6; i++) {
+        barBg.value[i] = i == index ? '#fdd835' : '#ddd0bb'
+    }
     doughnutValue.value = await getDoughnutValue(monthIndex.value)
     setDoughnutSum()
 }
 
+const monthlyData = ref<DocumentData[]>([])
 const openDetail = ref(false)
 const openDelete = ref(false)
 
@@ -76,6 +82,15 @@ const navigateBar = async (margin: number) => {
     monthNum.value = monthNum.value + margin
     chartLabels.value.splice(0)
     setLabels()
+    // barの背景色の設定
+    barPage.value += margin > 0 ? 1 : -1
+    for (let i = 0; i < 6; i++) {
+        if (barPage.value == 0) {
+            barBg.value[i] = i == monthIndexNum.value ? '#fdd835' : '#ddd0bb'
+        } else {
+            barBg.value[i] = '#ddd0bb'
+        }
+    }
     barValue.value = await getBarValue(chartLabels.value)
 }
 
@@ -114,7 +129,7 @@ const deleteData = async () => {
             <span v-if="(activeValue || activeValue == 0)">￥{{ activeValue }}</span>
         </div>
         <div v-if="barValue.length">
-            <BarChart :chart-value="barValue" :labels="chartLabels" :set-month="setMonth" />
+            <BarChart :chart-value="barValue" :labels="chartLabels" :bg="barBg" :set-month="setMonth" />
             <div class="pagination">
                 <QBtn @click="navigateBar(-6)" icon="sym_r_navigate_before" size="md" flat round class="q-mr-sm" />
                 <QBtn @click="navigateBar(6)" icon="sym_r_navigate_next" size="md" flat round />
@@ -123,7 +138,7 @@ const deleteData = async () => {
         <DoughnutChart v-if="doughnutSum" :chart-value="doughnutValue" />
     </div>
     <div v-if="doughnutSum" class="detail-wrap">
-        <QCard v-if="openDetail" transition-show="fade" transition-hide="fade" class="full-width" flat bordered>
+        <QCard v-if="openDetail" transition="fade" class="full-width" flat bordered>
             <div class="detail-title">
                 {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
             </div>
