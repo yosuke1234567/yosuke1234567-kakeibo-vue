@@ -7,7 +7,7 @@ dns.setDefaultResultOrder('verbatim')
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    base: './',
+    base: '/yosuke1234567-kakeibo-vue/',
     plugins: [
         vue({
             template: { transformAssetUrls }
