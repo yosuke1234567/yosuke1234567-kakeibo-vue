@@ -27,28 +27,28 @@ const toggleLeftDrawer = () => {
         <q-drawer v-model="leftDrawerOpen" side="left" bordered class="drawer">
             <h2 class="heading"><img src="../assets/yen.svg" alt="">Expense</h2>
             <q-list class="u-align-items-center">
-                <q-item class="item" clickable :active="location === '/'" active-class="active-item"
-                    @click="router.push('/')">
+                <q-item class="item" clickable :active="location === '/yosuke1234567-kakeibo-vue/'" active-class="active-item"
+                    @click="router.push('./')">
                     <q-item-section avatar>
                         <q-icon name="sym_r_home" />
                     </q-item-section>
                     <q-item-section>ホーム</q-item-section>
                 </q-item>
-                <q-item class="item" clickable :active="location === '/input'" active-class="active-item"
+                <q-item class="item" clickable :active="location === '/yosuke1234567-kakeibo-vue/input'" active-class="active-item"
                     @click="router.push('./input')">
                     <q-item-section avatar>
                         <q-icon name="sym_r_edit_square" />
                     </q-item-section>
                     <q-item-section>入力</q-item-section>
                 </q-item>
-                <q-item class="item" clickable :active="location === '/stats'" active-class="active-item"
+                <q-item class="item" clickable :active="location === '/yosuke1234567-kakeibo-vue/stats'" active-class="active-item"
                     @click="router.push('./stats')">
                     <q-item-section avatar>
                         <q-icon name="sym_r_leaderboard" />
                     </q-item-section>
                     <q-item-section>統計</q-item-section>
                 </q-item>
-                <q-item class="item" clickable :active="location === '/mypage'" active-class="active-item"
+                <q-item class="item" clickable :active="location === '/yosuke1234567-kakeibo-vue/mypage'" active-class="active-item"
                     @click="router.push('./mypage')">
                     <q-item-section avatar>
                         <q-icon name="sym_r_person" />

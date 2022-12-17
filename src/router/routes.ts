@@ -4,19 +4,19 @@ export const routes = [
     //     component: () => import('pages/ErrorNotFound.vue'),
     // },
     {
-        path: '/',
+        path: '/yosuke1234567-kakeibo-vue/',
         component: () => import('../pages/Home.vue'),
     },
     {
-        path: '/input',
+        path: '/yosuke1234567-kakeibo-vue/input',
         component: () => import('../pages/InputMenu.vue'),
     },
     {
-        path: '/stats',
+        path: '/yosuke1234567-kakeibo-vue/stats',
         component: () => import('../pages/Stats.vue'),
     },
     {
-        path: '/mypage',
+        path: '/yosuke1234567-kakeibo-vue/mypage',
         component: () => import('../pages/MyPage.vue'),
     },
 ]
