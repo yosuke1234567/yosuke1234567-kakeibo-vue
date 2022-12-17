@@ -7,7 +7,7 @@ dns.setDefaultResultOrder('verbatim')
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    base: process.env.NODE_ENV === 'production' ? '/github-pages-test/' : './',
+    base: './',
     plugins: [
         vue({
             template: { transformAssetUrls }
