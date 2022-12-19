@@ -13,7 +13,7 @@ router.afterEach(() => {
     location.value = route.path
 })
 
-const leftDrawerOpen = ref(true)
+const leftDrawerOpen = window.innerWidth > 1023 ? ref(true) : ref(false)
 
 const toggleLeftDrawer = () => {
     leftDrawerOpen.value = !leftDrawerOpen.value
@@ -22,7 +22,14 @@ const toggleLeftDrawer = () => {
 </script>
     
 <template>
-    <q-layout view="hhh Lpr fff">
+    <q-layout view="lHh Lpr fff">
+
+        <q-header reveal class="header">
+            <q-toolbar>
+                <q-btn flat @click="toggleLeftDrawer" round dense icon="sym_r_menu" />
+                <!-- <q-toolbar-title class="text-bold">Expense</q-toolbar-title> -->
+            </q-toolbar>
+        </q-header>
 
         <q-drawer v-model="leftDrawerOpen" side="left" bordered class="drawer">
             <h2 class="heading"><img src="../assets/yen.svg" alt="">Expense</h2>
@@ -66,6 +73,15 @@ const toggleLeftDrawer = () => {
 </template>
     
 <style scoped lang="scss">
+.header {
+    background-color: transparent;
+    color: #222;
+
+    @media screen and (min-width: 1024px) {
+        visibility: hidden;
+        height: 8px;
+    }
+}
 .drawer {
     background-color: #fffdfa;
 }

@@ -86,7 +86,7 @@ const addCategory = async () => {
 </script>
         
 <template>
-    <div class="container">
+    <div class="u-inner">
         <h2 class="text-center">マイページ</h2>
         <div>{{ email }}</div>
         <q-card flat bordered class="q-mt-sm">
@@ -123,17 +123,19 @@ const addCategory = async () => {
             </q-card>
             <q-dialog v-model="openAdd">
                 <q-card class="add-dialog">
-                    <h3 class="text-center">カテゴリーを追加</h3>
-                    <q-input v-model="newCategory" label="カテゴリー名" class="q-mb-lg">
-                        <template v-slot:prepend>
-                            <q-icon name="sym_r_edit" />
-                        </template>
-                    </q-input>
-                    <q-color v-model="newColor" :palette="palette" default-view="palette" no-header-tabs bordered
-                        class="color-picker q-mx-auto" />
-                    <q-btn label="保存" @click="addCategory" color="secondary" text-color="initial"
-                        class="full-width q-mt-lg q-mb-md" />
-                    <q-btn label="キャンセル" @click="openAdd = false" class="full-width" />
+                    <div class="dialog-inner">
+                        <h3 class="text-center">カテゴリーを追加</h3>
+                        <q-input v-model="newCategory" label="カテゴリー名" class="q-mb-lg">
+                            <template v-slot:prepend>
+                                <q-icon name="sym_r_edit" />
+                            </template>
+                        </q-input>
+                        <q-color v-model="newColor" :palette="palette" default-view="palette" no-header-tabs bordered
+                            class="color-picker q-mx-auto" />
+                        <q-btn label="保存" @click="addCategory" color="secondary" text-color="initial"
+                            class="full-width q-mt-lg q-mb-md" />
+                        <q-btn label="キャンセル" @click="openAdd = false" class="full-width" />
+                    </div>
                 </q-card>
             </q-dialog>
             <q-card v-if="categories" flat bordered>
@@ -175,14 +177,8 @@ const addCategory = async () => {
 </template>
         
 <style lang="scss" scoped>
-.container {
-    width: 400px;
-    margin: 0 auto;
-    padding: 32px 0;
-
-    h2 {
-        margin: 0 0 20px;
-    }
+h2 {
+    margin: 0 0 20px;
 }
 
 .category-head {
@@ -197,7 +193,17 @@ const addCategory = async () => {
 
 .add-dialog {
     width: 360px;
-    padding: 24px 48px;
+    max-width: 90%;
+    padding: 32px 0;
+}
+
+.dialog-inner {
+    width: 240px;
+    margin: 0 auto;
+
+    h3 {
+        margin: 0.5em 0 1em;
+    }
 }
 
 .category-item {

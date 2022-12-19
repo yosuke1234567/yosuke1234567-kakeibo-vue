@@ -33,43 +33,43 @@ onMounted(async () => {
 </script>
 
 <template>
-    <h2>今月の出費</h2>
-    <div class="chart-wrap">
-        <div v-if="chartSum == 0" class="no-data">
-            <img src="../assets/pigbear.png" alt="">
-            今月のデータはありません。
+    <div class="u-inner">
+        <h2>今月の出費</h2>
+        <div class="chart-wrap">
+            <div v-if="chartSum == 0" class="no-data">
+                <img src="../assets/pigbear.png" alt="">
+                今月のデータはありません。
+            </div>
+            <DoughnutChart v-else-if="chartValue.length" :chart-value="chartValue" />
+            <span v-else>Loading</span>
         </div>
-        <DoughnutChart v-else-if="chartValue.length" :chart-value="chartValue" />
-        <span v-else>Loading</span>
-    </div>
-    <h2>最近の記録</h2>
-    <div class="tl-wrap">
-        <q-timeline color="secondary" class="tl">
-            <q-timeline-entry v-for="snap in timelineData" :subtitle="snap.date" :title="snap.category">
-                <div class="tl-inner">
-                    <p>{{ snap.memo }}</p>
-                    <span>￥{{ snap.amount }}</span>
-                </div>
-            </q-timeline-entry>
-        </q-timeline>
+        <h2>最近の記録</h2>
+        <div class="tl-wrap">
+            <q-timeline color="secondary" class="tl">
+                <q-timeline-entry v-for="snap in timelineData" :subtitle="snap.date" :title="snap.category">
+                    <div class="tl-inner">
+                        <p>{{ snap.memo }}</p>
+                        <span>￥{{ snap.amount }}</span>
+                    </div>
+                </q-timeline-entry>
+            </q-timeline>
+        </div>
     </div>
 </template>
 
 <style scoped lang="scss">
 h2 {
-    width: 400px;
-    margin: 32px auto 16px;
+    margin: 0 0 16px;
 }
 
 h2:nth-of-type(2) {
-    margin: 48px auto 0;
+    margin: 48px 0 16px;
 }
 
 .chart-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 400px;
     min-height: 176px;
     margin: 0 auto;
     box-shadow: rgba(80, 73, 67, 0.2) 0 2px 8px;
@@ -97,11 +97,11 @@ h2:nth-of-type(2) {
 .tl-wrap {
     display: flex;
     justify-content: center;
-    padding: 12px 24px;
 }
 
 .tl {
-    width: 400px
+    margin: 0;
+    padding: 0 8px;
 }
 
 .tl-inner {

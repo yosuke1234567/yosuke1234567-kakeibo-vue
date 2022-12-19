@@ -72,9 +72,9 @@ const onKeydown = (e: KeyboardEvent) => {
 </script>
             
 <template>
-    <div class="container">
+    <div class="u-inner">
         <h2>入力</h2>
-        <form @submit="onSubmit" class="q-gutter-y-lg input-wrap">
+        <form @submit="onSubmit" class="q-gutter-y-lg">
             <q-input v-model="date" type="date" @keydown="onKeydown" stack-label label="日付 *"
                 class="u-bg-white u-del-date-icon" :class="{ err: calendarErr }">
                 <template v-slot:prepend>
@@ -128,15 +128,10 @@ const onKeydown = (e: KeyboardEvent) => {
 </template>
             
 <style scoped lang="scss">
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 32px;
-}
-
-.input-wrap {
-    width: 400px;
+h2 {
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
 }
 
 .err {

@@ -122,71 +122,66 @@ const deleteData = async () => {
 </script>
         
 <template>
-    <h2>統計</h2>
-    <div class="chart-wrap">
-        <div class="amount-area">
-            {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
-            <span v-if="(activeValue || activeValue == 0)">￥{{ activeValue }}</span>
-        </div>
-        <div v-if="barValue.length">
-            <BarChart :chart-value="barValue" :labels="chartLabels" :bg="barBg" :set-month="setMonth" />
-            <div class="pagination">
-                <q-btn @click="navigateBar(-6)" icon="sym_r_navigate_before" size="md" flat round class="q-mr-sm" />
-                <q-btn @click="navigateBar(6)" icon="sym_r_navigate_next" size="md" flat round />
-            </div>
-        </div>
-        <DoughnutChart v-if="doughnutSum" :chart-value="doughnutValue" />
-    </div>
-    <div v-if="doughnutSum" class="detail-wrap">
-        <q-card v-if="openDetail" transition="fade" class="full-width" flat bordered>
-            <div class="detail-title">
+    <div class="u-inner">
+        <h2>統計</h2>
+        <div class="chart-wrap">
+            <div class="amount-area">
                 {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
+                <span v-if="(activeValue || activeValue == 0)">￥{{ activeValue }}</span>
             </div>
-            <q-card-section class="q-py-sm">
-                <q-list separator>
-                    <q-item v-for="snap in monthlyData" class="q-pa-md">
-                        <q-item-section avatar class="q-pr-lg">
-                            <q-avatar color="primary" text-color="white" size="md" rounded>{{ snap.date.slice(8) }}
-                            </q-avatar>
-                        </q-item-section>
-                        <q-item-section>
-                            <q-item-label>￥{{ snap.amount }} - {{ snap.category }}</q-item-label>
-                            <q-item-label caption>{{ snap.memo }}</q-item-label>
-                        </q-item-section>
-                        <q-item-section side>
-                            <q-btn @click="showDeleteDialog(snap.createdAt)" icon="sym_r_delete" size="md" flat round />
-                        </q-item-section>
-                    </q-item>
-                </q-list>
-                <q-dialog v-model="openDelete">
-                    <q-card class="dialog-card">
-                        <q-card-section class="dialog-section">
-                            <img src="../assets/honey.png" alt="" draggable="false">
-                            <div>削除しますか？</div>
-                        </q-card-section>
-                        <q-card-actions class="justify-end">
-                            <q-btn label="キャンセル" @click="openDelete = false" class="col" />
-                            <q-btn label="OK" @click="deleteData" color="secondary" text-color="initial" class="col" />
-                        </q-card-actions>
-                    </q-card>
-                </q-dialog>
-            </q-card-section>
-        </q-card>
-        <q-btn v-else @click="showDetail" label="詳細を表示" outline padding="8px 32px" class="block q-mx-auto" />
+            <div v-if="barValue.length">
+                <BarChart :chart-value="barValue" :labels="chartLabels" :bg="barBg" :set-month="setMonth" />
+                <div class="pagination">
+                    <q-btn @click="navigateBar(-6)" icon="sym_r_navigate_before" size="md" flat round class="q-mr-sm" />
+                    <q-btn @click="navigateBar(6)" icon="sym_r_navigate_next" size="md" flat round />
+                </div>
+            </div>
+            <DoughnutChart v-if="doughnutSum" :chart-value="doughnutValue" />
+        </div>
+        <div v-if="doughnutSum" class="detail-wrap">
+            <q-card v-if="openDetail" transition="fade" class="full-width" flat bordered>
+                <div class="detail-title">
+                    {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
+                </div>
+                <q-card-section class="q-py-sm">
+                    <q-list separator>
+                        <q-item v-for="snap in monthlyData" class="q-pa-md">
+                            <q-item-section avatar class="q-pr-lg">
+                                <q-avatar color="primary" text-color="white" size="md" rounded>{{ snap.date.slice(8) }}
+                                </q-avatar>
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label>￥{{ snap.amount }} - {{ snap.category }}</q-item-label>
+                                <q-item-label caption>{{ snap.memo }}</q-item-label>
+                            </q-item-section>
+                            <q-item-section side>
+                                <q-btn @click="showDeleteDialog(snap.createdAt)" icon="sym_r_delete" size="md" flat round />
+                            </q-item-section>
+                        </q-item>
+                    </q-list>
+                    <q-dialog v-model="openDelete">
+                        <q-card class="dialog-card">
+                            <q-card-section class="dialog-section">
+                                <img src="../assets/honey.png" alt="" draggable="false">
+                                <div>削除しますか？</div>
+                            </q-card-section>
+                            <q-card-actions class="justify-end">
+                                <q-btn label="キャンセル" @click="openDelete = false" class="col" />
+                                <q-btn label="OK" @click="deleteData" color="secondary" text-color="initial" class="col" />
+                            </q-card-actions>
+                        </q-card>
+                    </q-dialog>
+                </q-card-section>
+            </q-card>
+            <q-btn v-else @click="showDetail" label="詳細を表示" outline padding="8px 32px" class="block q-mx-auto" />
+        </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
 h2 {
     text-align: center;
-    margin: 0;
-    padding: 32px 0 16px;
-}
-
-.chart-wrap,
-.detail-wrap {
-    width: 400px;
-    margin: 0 auto;
+    margin: 0 0 20px;
 }
 
 .chart-wrap {
@@ -228,6 +223,7 @@ h2 {
 
 .dialog-card {
     width: 400px;
+    max-width: 100%;
     padding: 0 16px 16px;
 }
 </style>
