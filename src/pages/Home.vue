@@ -40,8 +40,10 @@ onMounted(async () => {
                 <img src="../assets/pigbear.png" alt="">
                 今月のデータはありません。
             </div>
-            <DoughnutChart v-else-if="chartValue.length" :chart-value="chartValue" />
-            <span v-else>Loading</span>
+            <div v-else-if="chartValue.length">
+                <DoughnutChart :chart-value="chartValue" />
+            </div>
+            <div v-else class="q-pa-xl">Loading</div>
         </div>
         <h2>最近の記録</h2>
         <div class="tl-wrap">
@@ -67,9 +69,6 @@ h2:nth-of-type(2) {
 }
 
 .chart-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     min-height: 176px;
     margin: 0 auto;
     box-shadow: rgba(80, 73, 67, 0.2) 0 2px 8px;
@@ -81,7 +80,7 @@ h2:nth-of-type(2) {
 .no-data {
     width: 100%;
     margin: 0;
-    padding: 0 0 20px;
+    padding: 0 8px 20px;
     // border: 1px solid rgba(80, 73, 67, 0.08);
     // background-color: rgba(80, 73, 67, 0.04);
     text-align: center;
@@ -91,6 +90,10 @@ h2:nth-of-type(2) {
         display: block;
         margin: 0 auto;
         width: 200px;
+    }
+
+    @media screen and (max-width: 480px) {
+        font-size: 1.25rem;
     }
 }
 
