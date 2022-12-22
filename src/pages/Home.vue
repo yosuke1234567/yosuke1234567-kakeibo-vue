@@ -35,7 +35,7 @@ onMounted(async () => {
 <template>
     <div class="u-inner">
         <h2>今月の出費</h2>
-        <div class="chart-wrap">
+        <q-card class="chart-wrap">
             <div v-if="chartSum == 0" class="no-data">
                 <img src="../assets/pigbear.png" alt="">
                 今月のデータはありません。
@@ -44,7 +44,7 @@ onMounted(async () => {
                 <DoughnutChart :chart-value="chartValue" />
             </div>
             <div v-else class="q-pa-xl">Loading</div>
-        </div>
+        </q-card>
         <h2>最近の記録</h2>
         <div class="tl-wrap">
             <q-timeline color="secondary" class="tl">
@@ -61,20 +61,18 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 h2 {
-    margin: 0 0 16px;
+    margin: 0 0 8px;
 }
 
 h2:nth-of-type(2) {
-    margin: 48px 0 16px;
+    margin: 40px 0 12px;
 }
 
 .chart-wrap {
     min-height: 176px;
     margin: 0 auto;
     box-shadow: rgba(80, 73, 67, 0.2) 0 2px 8px;
-    // border: 1px solid rgba(80, 73, 67, 0.2);
     border-radius: 8px;
-    background-color: #fffdfa;
 }
 
 .no-data {

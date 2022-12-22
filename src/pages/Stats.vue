@@ -125,21 +125,25 @@ const deleteData = async () => {
     <div class="u-inner">
         <h2>統計</h2>
         <div class="chart-wrap">
-            <div class="amount-area">
-                {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
-                <span v-if="(activeValue || activeValue == 0)">￥{{ activeValue }}</span>
-            </div>
-            <div v-if="barValue.length">
-                <BarChart :chart-value="barValue" :labels="chartLabels" :bg="barBg" :set-month="setMonth" />
-                <div class="pagination">
-                    <q-btn @click="navigateBar(-6)" icon="sym_r_navigate_before" size="md" flat round class="q-mr-sm" />
-                    <q-btn @click="navigateBar(6)" icon="sym_r_navigate_next" size="md" flat round />
+            <q-card class="q-py-md q-mb-lg radius-8">
+                <div class="amount-area">
+                    {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
+                    <span v-if="(activeValue || activeValue == 0)">￥{{ activeValue }}</span>
                 </div>
-            </div>
-            <DoughnutChart v-if="doughnutSum" :chart-value="doughnutValue" />
+                <div v-if="barValue.length">
+                    <BarChart :chart-value="barValue" :labels="chartLabels" :bg="barBg" :set-month="setMonth" />
+                    <div class="pagination">
+                        <q-btn @click="navigateBar(-6)" icon="sym_r_navigate_before" size="md" flat round class="q-mr-sm" />
+                        <q-btn @click="navigateBar(6)" icon="sym_r_navigate_next" size="md" flat round />
+                    </div>
+                </div>
+            </q-card>
+            <q-card v-if="doughnutSum" class="radius-8">
+                <DoughnutChart :chart-value="doughnutValue" />
+            </q-card>
         </div>
         <div v-if="doughnutSum" class="detail-wrap">
-            <q-card v-if="openDetail" transition="fade" class="full-width" flat bordered>
+            <q-card v-if="openDetail" transition="fade" class="full-width">
                 <div class="detail-title">
                     {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
                 </div>
@@ -173,7 +177,7 @@ const deleteData = async () => {
                     </q-dialog>
                 </q-card-section>
             </q-card>
-            <q-btn v-else @click="showDetail" label="詳細を表示" outline padding="8px 32px" class="block q-mx-auto" />
+            <q-btn v-else @click="showDetail" label="詳細を表示" color="secondary" text-color="initial" padding="10px 32px" class="block q-mx-auto q-mt-sm" />
         </div>
     </div>
 </template>
@@ -195,10 +199,15 @@ h2 {
 
 .amount-area {
     width: fit-content;
-    margin: 8px auto;
+    margin: 10px auto 8px;
     padding: 16px 32px;
-    border-radius: 4px;
+    border: 1px solid rgba(80, 73, 67, 0.16) !important;
+    border-radius: 4px !important;
     background-color: rgba(80, 73, 67, 0.08);
+}
+
+.radius-8 {
+    border-radius: 8px;
 }
 
 .detail-wrap {

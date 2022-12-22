@@ -134,6 +134,10 @@ h2 {
     text-align: center;
 }
 
+form {
+    padding-bottom: 60px;
+}
+
 .err {
     position: relative;
     background-color: $red-2;

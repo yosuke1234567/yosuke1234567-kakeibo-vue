@@ -181,6 +181,10 @@ h2 {
     margin: 0 0 20px;
 }
 
+.category-wrap {
+    padding-bottom: 50px;
+}
+
 .category-head {
     display: flex;
     align-items: center;

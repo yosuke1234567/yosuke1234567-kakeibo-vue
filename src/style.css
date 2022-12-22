@@ -53,7 +53,7 @@ body {
 }
 
 .q-card {
-    background-color: #fffdfa;
+    box-shadow: rgba(80, 73, 67, 0.2) 0 2px 8px;
 }
 
 .q-layout:focus-visible {

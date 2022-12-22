@@ -37,7 +37,7 @@ const setChartValue = () => {
         labels: chartLabels.value,
         datasets: [
             {
-                borderColor: '#f5f2eb',
+                borderColor: '#fff',
                 backgroundColor: chartBgColor.value,
                 data: props.chartValue
             }
