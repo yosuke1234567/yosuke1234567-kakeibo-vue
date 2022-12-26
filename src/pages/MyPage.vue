@@ -12,8 +12,9 @@ const confirmSignOut = ref(false)
 const signOut = async () => {
     await auth.signOut()
     console.log('sign out')
+    window.location.href = './'
     // ページを更新
-    router.go(0)
+    // router.go(0)
 }
 
 interface Category {

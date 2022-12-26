@@ -19,4 +19,8 @@ export const routes = [
         path: '/yosuke1234567-kakeibo-vue/mypage',
         component: () => import('../pages/MyPage.vue'),
     },
+    {
+        path: '/:pathMatch(.*)',
+        component: () => import('../pages/NotFound.vue'),
+    }
 ]
