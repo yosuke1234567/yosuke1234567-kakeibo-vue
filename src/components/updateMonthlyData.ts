@@ -14,11 +14,11 @@ export const updateMonthlyData = async (monthArg: number) => {
 
     interface Stats {
         amount: number
-        category: any
+        category: string
     }
     interface CategoryDocElm {
-        color: String
-        type: String
+        color: string
+        type: string
     }
 
     const thisMonthStats: Stats[] = [] // 一月分の集計を格納する変数

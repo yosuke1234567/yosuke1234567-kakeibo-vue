@@ -31,15 +31,6 @@ const setLabels = () => {
 }
 
 const doughnutValue = ref<number[]>([])
-const doughnutSum = ref<number>()
-
-const setDoughnutSum = () => {
-    let sum = 0
-    for (let i = 0; i < doughnutValue.value.length; i++) {
-        sum += doughnutValue.value[i]
-    }
-    doughnutSum.value = sum
-}
 
 const barValue = ref<number[]>([])
 const barBg = ref<string[]>(['#ddd0bb', '#ddd0bb', '#ddd0bb', '#ddd0bb', '#ddd0bb', '#fdd835'])
@@ -58,7 +49,6 @@ const setMonth = async (index: number) => {
         barBg.value[i] = i == index ? '#fdd835' : '#ddd0bb'
     }
     doughnutValue.value = await getDoughnutValue(monthIndex.value)
-    setDoughnutSum()
 }
 
 const monthlyData = ref<DocumentData[]>([])
@@ -73,7 +63,6 @@ onMounted(async () => {
         barValue.value = await getBarValue(chartLabels.value)
         doughnutValue.value = await getDoughnutValue(monthIndex.value)
         activeValue.value = barValue.value[5]
-        setDoughnutSum()
     }
 })
 
@@ -115,7 +104,6 @@ const deleteData = async () => {
     doughnutValue.value = await getDoughnutValue(monthIndex.value)
 
     activeValue.value = barValue.value[monthIndexNum.value]
-    setDoughnutSum()
     openDelete.value = false
 }
 
@@ -128,7 +116,7 @@ const deleteData = async () => {
             <q-card class="q-py-md q-mb-lg radius-8">
                 <div class="amount-area">
                     {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
-                    <span v-if="(activeValue || activeValue == 0)">￥{{ activeValue }}</span>
+                    <span v-if="(activeValue || activeValue == 0)">￥{{ activeValue.toLocaleString() }}</span>
                 </div>
                 <div v-if="barValue.length">
                     <BarChart :chart-value="barValue" :labels="chartLabels" :bg="barBg" :set-month="setMonth" />
@@ -138,11 +126,11 @@ const deleteData = async () => {
                     </div>
                 </div>
             </q-card>
-            <q-card v-if="doughnutSum" class="radius-8">
+            <q-card v-if="doughnutValue.length" class="radius-8">
                 <DoughnutChart :chart-value="doughnutValue" />
             </q-card>
         </div>
-        <div v-if="doughnutSum" class="detail-wrap">
+        <div v-if="doughnutValue.length" class="detail-wrap">
             <q-card v-if="openDetail" transition="fade" class="full-width">
                 <div class="detail-title">
                     {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
@@ -155,7 +143,7 @@ const deleteData = async () => {
                                 </q-avatar>
                             </q-item-section>
                             <q-item-section>
-                                <q-item-label>￥{{ snap.amount }} - {{ snap.category }}</q-item-label>
+                                <q-item-label>￥{{ snap.amount.toLocaleString() }} - {{ snap.category }}</q-item-label>
                                 <q-item-label caption>{{ snap.memo }}</q-item-label>
                             </q-item-section>
                             <q-item-section side>

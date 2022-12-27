@@ -32,7 +32,7 @@ const toggleLeftDrawer = () => {
         </q-header>
 
         <q-drawer v-model="leftDrawerOpen" side="left" bordered class="drawer">
-            <h2 class="heading"><img src="../assets/yen.svg" alt="">Expense</h2>
+            <h2 class="heading"><img src="../assets/yen.svg" alt="">kakeibo</h2>
             <q-list class="u-align-items-center">
                 <q-item class="item" clickable :active="location === '/yosuke1234567-kakeibo-vue/'" active-class="active-item"
                     @click="router.push('./')">

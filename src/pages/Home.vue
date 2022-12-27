@@ -51,7 +51,7 @@ onMounted(async () => {
                 <q-timeline-entry v-for="snap in timelineData" :subtitle="snap.date" :title="snap.category">
                     <div class="tl-inner">
                         <p>{{ snap.memo }}</p>
-                        <span>￥{{ snap.amount }}</span>
+                        <span>￥{{ snap.amount.toLocaleString() }}</span>
                     </div>
                 </q-timeline-entry>
             </q-timeline>
