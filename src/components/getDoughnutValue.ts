@@ -7,11 +7,13 @@ export const getDoughnutValue = async (monthStr: string) => {
         category: string
     }
     const statsRef = doc(db, auth.currentUser!.uid, `stats-${monthStr}`)
-    const statsData: Stats[] = (await getDoc(statsRef)).data()!.expense
+    const statsData = (await getDoc(statsRef)).data()
     if (statsData) {
+        const statsExp: Stats[] = statsData.expense
+
         let sum = 0
-        for (let i = 0; i < statsData.length; i++) {
-            sum += statsData[i].amount
+        for (let i = 0; i < statsExp.length; i++) {
+            sum += statsExp[i].amount
         }
 
         if (sum > 0 && auth.currentUser) {
@@ -28,9 +30,9 @@ export const getDoughnutValue = async (monthStr: string) => {
                 chartValue.push(0)
             }
             for (let i = 0; i < categories.length; i++) {
-                for (let j = 0; j < statsData.length; j++) {
-                    if (categories[i].type === statsData[j].category) {
-                        chartValue[i] = statsData[j].amount
+                for (let j = 0; j < statsExp.length; j++) {
+                    if (categories[i].type === statsExp[j].category) {
+                        chartValue[i] = statsExp[j].amount
                     }
                 }
             }

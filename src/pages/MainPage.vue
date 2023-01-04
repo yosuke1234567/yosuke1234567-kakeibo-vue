@@ -27,7 +27,6 @@ const toggleLeftDrawer = () => {
         <q-header reveal class="header">
             <q-toolbar>
                 <q-btn flat @click="toggleLeftDrawer" round dense icon="sym_r_menu" />
-                <!-- <q-toolbar-title class="text-bold">Expense</q-toolbar-title> -->
             </q-toolbar>
         </q-header>
 
@@ -70,6 +69,12 @@ const toggleLeftDrawer = () => {
         </q-page-container>
 
     </q-layout>
+
+    <div>
+        <img src="../assets/bear.png" alt="" class="hidden">
+        <img src="../assets/honey.png" alt="" class="hidden">
+        <img src="../assets/pigbear.png" alt="" class="hidden">
+    </div>
 </template>
     
 <style scoped lang="scss">

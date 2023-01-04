@@ -46,7 +46,7 @@ const verify = async () => {
     <MainPage v-if="signInState" />
     <SignIn v-else-if="signInState === false" :verify="verify" />
     <div v-else class="loading">
-        <QSpinnerOval size="3em" />
+        <q-spinner-oval size="3em" />
     </div>
 </template>
 
