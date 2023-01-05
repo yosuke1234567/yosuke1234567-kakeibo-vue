@@ -11,20 +11,21 @@ import { getBarValue } from '../components/getBarValue'
 
 const chartLabels = ref<string[]>([])
 const date = new Date()
+const yearNum = ref(date.getFullYear())
 const monthNum = ref(date.getMonth() + 1)
 const setLabels = () => {
     for (let i = 0; i < 6; i++) {
         if ((monthNum.value - i) > 0) {
             if ((monthNum.value - i) < 13) {
                 const month = (monthNum.value - i).toString().padStart(2, '0') // 月の0埋め
-                chartLabels.value.unshift(`${date.getFullYear()}-${month}`)
+                chartLabels.value.unshift(`${yearNum.value}-${month}`)
             } else {
                 const month = ((monthNum.value - i) - 12).toString().padStart(2, '0')
-                chartLabels.value.unshift(`${date.getFullYear() + 1}-${month}`)
+                chartLabels.value.unshift(`${yearNum.value + 1}-${month}`)
             }
         } else {
             const month = (12 - (i - monthNum.value)).toString().padStart(2, '0')
-            chartLabels.value.unshift(`${date.getFullYear() - 1}-${month}`)
+            chartLabels.value.unshift(`${yearNum.value - 1}-${month}`)
         }
     }
     console.log(chartLabels.value)
@@ -34,7 +35,7 @@ const doughnutValue = ref<number[]>([])
 
 const barValue = ref<number[]>([])
 const barBg = ref<string[]>(['#ddd0bb', '#ddd0bb', '#ddd0bb', '#ddd0bb', '#ddd0bb', '#fdd835'])
-const monthIndex = ref<string>(`${date.getFullYear()}-${date.getMonth() + 1}`)
+const monthIndex = ref<string>(`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`)
 const monthIndexNum = ref<number>(5) // activeのbarValueが何番目かを保存
 const activeValue = ref<number>()
 const barPage = ref<number>(0) // 現在表示している月があるページを0とする
@@ -68,7 +69,13 @@ onMounted(async () => {
 
 // ページネーション
 const navigateBar = async (margin: number) => {
-    monthNum.value = monthNum.value + margin
+    if (monthNum.value + margin <= -6) {
+        yearNum.value = yearNum.value - 1
+        monthNum.value = monthNum.value + margin + 12
+    } else {
+        monthNum.value = monthNum.value + margin
+    }
+
     chartLabels.value.splice(0)
     setLabels()
     // barの背景色の設定
@@ -115,7 +122,7 @@ const deleteData = async () => {
         <div class="chart-wrap">
             <q-card class="q-py-md q-mb-lg radius-8">
                 <div class="amount-area">
-                    {{ monthIndex.slice(0, 4) }}年 {{ new Date(monthIndex).getMonth() + 1 }}月
+                    {{ monthIndex.slice(0, 4) }}年 {{ monthIndex.slice(5, 7) }}月
                     <span v-if="(activeValue || activeValue == 0)">￥{{ activeValue.toLocaleString() }}</span>
                 </div>
                 <div v-if="barValue.length">

@@ -20,8 +20,7 @@ onMounted(async () => {
         console.log(timelineData.value)
 
         const date = new Date()
-        chartValue.value = await getDoughnutValue(`${date.getFullYear()}-${date.getMonth() + 1}`)
-
+        chartValue.value = await getDoughnutValue(`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`)
         let sum = 0
         for (let i = 0; i < chartValue.value.length; i++) {
             sum += chartValue.value[i]
